@@ -51,7 +51,7 @@
 			<classpath location="lib/jflex-full-1.7.0.jar" />
 		</taskdef>
 
-		<jflex file="${jflex.dir}/Tokenizer.jflex"
+		<jflex file="${jflex.dir}/Tokenizer-1.jflex"
 	           destdir="${src.dir}" />
 	</target>
 
