@@ -1,0 +1,21 @@
+OPERATOR:+
+OPERATOR:+
+KEYWORD : USING
+KEYWORD : NAMESPACE
+KEYWORD : CHAR
+Entiers                  55
+Entiers                  50
+Entiers                  10
+KEYWORD : WHILE
+KEYWORD : TRUE
+KEYWORD : IF
+KEYWORD : IF
+Chiffres0
+KEYWORD : BREAK
+KEYWORD : ELSE
+KEYWORD : IF
+Chiffres0
+KEYWORD : BREAK
+KEYWORD : IF
+Chiffres0
+KEYWORD : ELSE

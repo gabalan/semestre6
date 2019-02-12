@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     janv. 2019                                                        
+
+     Lexer project    
+     compilation du projet Lexer
+                   
+     Lionel                                                                
+     ====================================================================== -->
+
+<project name="TD1 project" default="default">
+	<property name="classes.dir" location="classes"/>
+	<property name="lib.dir" location="lib"/>
+	<property name="src.dir" location="src"/>
+	<property name="bin.dir" location="bin"/>
+	<property name="jflex.dir" location="jflex"/>
+	<property name="data.dir" location="data"/>
+
+	<!-- ================================= 
+          target: default              
+         ================================= -->
+	<target name="default" depends="main" description="exécution du projet Lexer">
+
+		<java 
+    			classname="Lexer"
+    			classpath="${bin.dir}"
+    			output="${data.dir}/output.txt" >
+				<arg value="${data.dir}/pgcd.cpp" />
+			</java>
+	</target>
+
+	<!-- ================================= 
+          target: main              
+         ================================= -->
+	<target name="main" depends="lexer" description="compilation du projet">
+		<mkdir dir="${bin.dir}"/>
+		<javac includeantruntime="false"
+		srcdir="${src.dir}"
+         destdir="${bin.dir}"
+         classpath=""
+         debug="on"
+		/>
+
+	</target>
+
+	<!-- =================================
+          target: lexer
+         ================================= -->
+	<target name="lexer" description="exécution de JFlex">
+		<taskdef name="jflex" classname="jflex.anttask.JFlexTask">
+			<classpath location="lib/jflex-full-1.7.0.jar" />
+		</taskdef>
+
+		<jflex file="${jflex.dir}/Lexer.jflex"
+	           destdir="${src.dir}" />
+	</target>
+
+</project>
