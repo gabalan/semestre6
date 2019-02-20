@@ -1,0 +1,17 @@
+%class "ParserLogic";
+
+%terminals NEWLINE, AND, OR, NOT, VAR, TRUE, FALSE, PAR_IN, PAR_OUT;
+
+%goal X;
+
+
+X = VAR {: System.out.println("var"); return new Symbol(0); :}
+	| TRUE {: System.out.println("1"); return new Symbol(0); :}
+	| FALSE {: System.out.println("0"); return new Symbol(0);  :}
+	| PAR_IN X OR X PAR_OUT {: System.out.println("or"); return new Symbol(0);  :}
+	| PAR_IN X AND X PAR_OUT {: System.out.println("and"); return new Symbol(0);  :}
+	| NOT X {: System.out.println("not"); return new Symbol(0);  :}
+	| X NEWLINE {: System.out.println("x ln"); return new Symbol(0);  :}
+	;
+
+

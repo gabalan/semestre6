@@ -1,0 +1,15 @@
+%class "ParserLogic";
+
+%terminals CONST, VAR, LPAR, RPAR, OR, AND, NOT;
+
+%goal S;
+
+S =X
+    ;
+
+X = CONST
+	|VAR
+	|NOT LPAR X 
+	|RPAR X OR
+	|AND
+	;

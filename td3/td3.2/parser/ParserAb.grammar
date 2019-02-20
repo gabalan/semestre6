@@ -1,0 +1,14 @@
+%class "ParserAb";
+
+%terminals A, B, NEWLINE;
+
+%goal S;
+S=L;
+L=L NEWLINE
+		| NEWLINE;
+S = X NEWLINE;
+S= | NEWLINE
+
+X = A X B
+	|
+	;
