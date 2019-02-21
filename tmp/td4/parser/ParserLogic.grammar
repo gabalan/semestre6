@@ -1,18 +1,38 @@
 %class "ParserLogic";
 
-%terminals NEWLINE,VAR,exprArithm, exprComp,exprLog;
+%terminals TRUE, FALSE, VAR, LPAR, RPAR, OR, AND, NOT,PLUS,MINUS,TIMES,DIV,LT,LG,LE,GE,EQ,NE,NUMBER;
 
-%goal GOAL;
+%right UNIMINUS;
+%left TIMES,DIV;
+%left PLUS,MINUS;
 
+%goal S;
 
-X = VAR {: System.out.println("var"); return new Symbol(0); :}
-	| TRUE {: System.out.println("1"); return new Symbol(0); :}
-	| FALSE {: System.out.println("0"); return new Symbol(0);  :}
-	| PAR_IN X OR X PAR_OUT {: System.out.println("or"); return new Symbol(0);  :}
-	| PAR_IN X AND X PAR_OUT {: System.out.println("and"); return new Symbol(0);  :}
-	| NOT X {: System.out.println("not"); return new Symbol(0);  :}
-	| X NEWLINE {: System.out.println("x ln"); return new Symbol(0);  :}
-	;
+S 	=   	AE
+			|		LE
+			| 	CE
+			;
+AE	=			AE	PLUS	AE
+			| 	AE	MINUS	AE
+			|	  MINUS AE 			@ UNIMINUS
+			| 	AE	TIMES	AE
+			| 	AE	DIV	AE
+			| 	LPAR AE	RPAR
+			|		NUMBER
+			;
 
-T= F | F AND F;
-F = X | X OR X;
+LE = 			LE AND LE
+			|		LE OR LE
+			|		NOT LE
+			| 	LPAR LE RPAR
+			| 	TRUE
+			| 	FALSE
+			;
+
+CE =			AE LT AE
+			|		AE LG AE
+			| 	AE LE AE
+			|		AE GE AE
+			|		AE EQ AE
+			|		AE NE AE
+			;

@@ -1,16 +1,19 @@
 %class "ParserLogic";
 
-%terminals CONST, VAR, LPAR, RPAR, OR, AND, NOT;
+%terminals TRUE, FALSE, VAR, LPAR, RPAR, OR, AND, NOT;
 
 %goal S;
 
-S=E;
+S =   E;
 
-E=T OR T | T;
-T=F AND F | F;
-F=CONST 
-	| VAR 
-	| LPAR E RPAR 
-	| NOT E;
-	
+E =	E OR T
+	| T;
 
+T = 	T AND F
+	| F;
+
+F=	TRUE
+	| FALSE
+	| VAR
+	| LPAR E RPAR
+	| NOT  LPAR E RPAR;

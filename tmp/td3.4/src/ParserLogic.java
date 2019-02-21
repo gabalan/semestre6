@@ -9,37 +9,54 @@ import java.util.ArrayList;
 public class ParserLogic extends Parser {
 
 	static final ParsingTables PARSING_TABLES = new ParsingTables(
-		"U9nTZbaEX30CGqte0XNpmOtdsgp62Oo4fj9Jx3Ij0s16mWZZGg9m3H9w55If362Gp#wbErZ" +
-		"WdIxcJEzwtRGluXIH7ZqzjOcFwnyaTvNyxddIdsztuI7sK1lFoAXABu5f4ujDalzm0Q3T7i" +
-		"i=");
+		"U9oLZyaEmZ0CH2TDA5reAHI90mUGM2uS#CN#DFjY9gaF4U80hjwCxKHE3U200cCCaI7$EQj" +
+		"H8P5Zy3BeH8JkO352IhMOei60dq72olsH#PTApkczLmHF#NvEzMxu9ndxRKSH1crD7Ddw#x" +
+		"uVmwZ9IlET#jxF89leNgE#K5z#cJNxx6b$7kKjDEH57dAJgrn2VPQdtFNiH2cuh#6UbXXMb" +
+		"XZk6cE9G$K6XVufpG==");
+
+	static final Action RETURN3 = new Action() {
+		public Symbol reduce(Symbol[] _symbols, int offset) {
+			return _symbols[offset + 3];
+		}
+	};
+
+	static final Action RETURN4 = new Action() {
+		public Symbol reduce(Symbol[] _symbols, int offset) {
+			return _symbols[offset + 4];
+		}
+	};
 
 	private final Action[] actions;
 
 	public ParserLogic() {
 		super(PARSING_TABLES);
 		actions = new Action[] {
-			Action.RETURN,	// [0] $goal = S
-			new Action() {	// [1] S = LINE
+			Action.RETURN,	// [0] S = E
+			new Action() {	// [1] E = E OR T
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 3]); return _symbols[offset + 1];
+				}
+			},
+			new Action() {	// [2] E = T
 				public Symbol reduce(Symbol[] _symbols, int offset) {
 					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
 				}
 			},
-			new Action() {	// [2] S = S LINE
+			new Action() {	// [3] T = T AND F
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 2]); return _symbols[offset + 1];
+					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 3]); return _symbols[offset + 1];
 				}
 			},
-			new Action() {	// [3] LINE = X NEWLINE
+			new Action() {	// [4] T = F
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					 return new Symbol(0);
+					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1]); return new Symbol(lst);
 				}
 			},
-			new Action() {	// [4] X = A X B
-				public Symbol reduce(Symbol[] _symbols, int offset) {
-					return new Symbol(1);
-				}
-			},
-			Action.NONE	// [5] X = 
+			Action.RETURN,	// [5] F = TRUE
+			Action.RETURN,	// [6] F = FALSE
+			Action.RETURN,	// [7] F = VAR
+			RETURN3,	// [8] F = LPAR E RPAR; returns 'RPAR' although none is marked
+			RETURN4	// [9] F = NOT LPAR E RPAR; returns 'RPAR' although none is marked
 		};
 	}
 
