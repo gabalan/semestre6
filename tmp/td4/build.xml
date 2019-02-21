@@ -18,8 +18,8 @@
 	</target>
 
 	<target name="parser" depends="beavertask" description="generate parser">
-		<beaver file="parser/ParserLogic.grammar" destdir="src" compress="yes" 
-			exportTables="no" sortTerminals="no" terminalNames="no" 
+		<beaver file="parser/ParserLogic.grammar" destdir="src" compress="yes"
+			exportTables="no" sortTerminals="no" terminalNames="no"
 			exportTerminals="yes" useSwitch="no" anonymousActions="yes" reportActions="no" />
 	</target>
 
@@ -49,11 +49,10 @@
 
 	<target name="clean" description="remove compiled files">
 		<delete>
-			<fileset dir="src" includes="*.java" excludes="Main.java" />
+			<fileset dir="src" includes="*.java" excludes="Main.java ,ArithEX.java" />
 			<fileset dir="bin" includes="*.class" excludes="" />
 			<fileset dir="data" includes="output" excludes="" />
 		</delete>
 	</target>
 
 </project>
-
