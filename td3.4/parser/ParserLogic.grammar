@@ -1,16 +1,16 @@
-%class "ParserAb";
+%class "ParserLogic";
 
-%terminals A, B, NEWLINE;
+%terminals CONST, VAR, LPAR, RPAR, OR, AND, NOT;
 
 %goal S;
 
-S = LINE
-    | S LINE
-    ;
+S=E;
 
-LINE = X NEWLINE {: return new Symbol(0);:}
-    ;
+E=T OR T | T;
+T=F AND F | F;
+F=CONST 
+	| VAR 
+	| LPAR E RPAR 
+	| NOT E;
+	
 
-X = A X B{:return new Symbol(1);:}
-    |
-    ;

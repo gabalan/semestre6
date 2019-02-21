@@ -4,12 +4,9 @@
 
 %goal S;
 
-S =X
-    ;
+S=E;
 
-X = CONST
-	|VAR
-	|NOT LPAR X 
-	|RPAR X OR
-	|AND
-	;
+E=T OR T | T;
+T=F AND F | F;
+F=CONST | VAR | LPAR E RPAR | NOT E;
+

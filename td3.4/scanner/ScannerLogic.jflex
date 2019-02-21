@@ -2,8 +2,8 @@ import beaver.Symbol;
 import beaver.Scanner;
 
 %%
-
-%class ScannerAb
+%public
+%class ScannerLogic
 %extends Scanner
 %function nextToken
 %type Symbol
@@ -14,8 +14,9 @@ import beaver.Scanner;
 %unicode
 
 %%
-
-	"a"         {System.out.println("je vois un a"); return new Symbol(Terminals.A); }
-	"b"         {System.out.println("je vois un b"); return new Symbol(Terminals.B); }
-	\n         {System.out.println("fin de la ligne");return new Symbol(Terminals.NEWLINE); }
-	[^]            { }
+	[a-zA-Z_]+			{}
+	"∨" |\u2228			{ System.out.println("AND"); return new Symbol(Terminals.OR); }
+	"∧"	|\u2227			{ System.out.println("OR"); return new Symbol(Terminals.AND); }
+	"¬"	|\u00AC			{ System.out.println("NOT"); return new Symbol(Terminals.NOT); }
+	"("			{ System.out.println("NOT"); return new Symbol(Terminals.LPAR); }
+	")"			{ System.out.println("NOT"); return new Symbol(Terminals.RPAR); }
