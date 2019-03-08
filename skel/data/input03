@@ -1,0 +1,2 @@
+head: (List(int)) -> int;
+head(["un","deux"]) + 1

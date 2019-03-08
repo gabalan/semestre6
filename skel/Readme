@@ -1,0 +1,22 @@
+Les bibliothèques beaver et Jflex sont manquantes.
+Il faut que le dossier lib contiennent :
+ - beaver-ant.jar
+ - beaver-cc.jar
+ - beaver-rt.jar
+ - jflex-full-1.7.0.jar
+
+Soit en récupérant ces fichiers dans un autre projet (à la main).
+Soit en les récupérant de nouveau depuis leur sites respectifs, par exemple :
+
+	wget https://netix.dl.sourceforge.net/project/beaver/beaver-0.9.11.zip
+	wget http://jflex.de/release/jflex-1.7.0.tar.gz
+	unzip beaver-0.9.11.zip beaver-0.9.11/lib/\*
+	tar xf jflex-1.7.0.tar.gz jflex-1.7.0/lib/jflex-full-1.7.0.jar
+	mkdir lib
+	cd lib
+	ln -s ../beaver-0.9.11/lib/beaver-ant.jar .
+	ln -s ../beaver-0.9.11/lib/beaver-cc.jar .
+	ln -s ../beaver-0.9.11/lib/beaver-rt.jar .
+	ln -s ../jflex-1.7.0/lib/jflex-full-1.7.0.jar .
+
+(ici en créant des liens symboliques plutôt qu'en copiant)
