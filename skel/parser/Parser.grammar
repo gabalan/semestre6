@@ -23,6 +23,9 @@
 
 %left PLUS,MINUS;
 
+%typeof type = "Type";
+%typeof type_simple = "Type";
+
 expression_typee= declaration_list expression
                 ;
 
@@ -38,7 +41,7 @@ type= type_simple
     | LPAR type_list RPAR MAPSTO type
     ;
 
-type_simple= TYPE_INT
+type_simple= TYPE_INT {:TypeSimple ts=new TypeSimple("int");System.out.println(ts.toString());return ts;:}
            | TYPE_STRING
            ;
 

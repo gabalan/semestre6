@@ -117,7 +117,7 @@
 	type: SHIFT; goto 37
 	type_simple: SHIFT; goto 28
 37:	[any]: REDUCE type = LPAR type_list RPAR MAPSTO type
-38:	[any]: REDUCE type_simple = TYPE_INT
+38:	[any]: REDUCE type_simple = TYPE_INT.x
 39:	[any]: REDUCE type_simple = TYPE_STRING
 40:	LPAR: SHIFT; goto 33
 	LIST: SHIFT; goto 29

@@ -65,7 +65,12 @@ public class ParserExp extends Parser {
 			Action.RETURN,	// [4] type = type_simple
 			RETURN4,	// [5] type = LIST LPAR type RPAR; returns 'RPAR' although none is marked
 			RETURN5,	// [6] type = LPAR type_list RPAR MAPSTO type; returns 'type' although none is marked
-			Action.RETURN,	// [7] type_simple = TYPE_INT
+			new Action() {	// [7] type_simple = TYPE_INT.x
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol x = _symbols[offset + 1];
+					Tag xs=Tag ("int");TypeSimple ts=new TypeSimple(xs.getTypeSimple());System.out.println(ts.toString());return ts;
+				}
+			},
 			Action.RETURN,	// [8] type_simple = TYPE_STRING
 			Action.NONE,  	// [9] type_list = 
 			Action.RETURN,	// [10] type_list = type
