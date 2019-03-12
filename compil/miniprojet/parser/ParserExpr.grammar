@@ -1,0 +1,24 @@
+%import "abstractTree.*";
+%class "ParserExpr";
+
+%embed {: 
+
+static public class MyEvents extends beaver.Parser.Events {
+	
+	public void syntaxError(Symbol token) {
+		System.err.print("Erreur de syntaxe ligne ");
+		System.err.println(Symbol.getLine(token.getStart()));
+		System.err.print("Token inattendu: ");
+		System.err.println(Terminals.NAMES[token.getId()]);
+	}
+};
+
+:} ;
+
+%init {:
+	report = new MyEvents();
+:};
+
+%goal Program;
+
+// COMPLETER A PARTIR D'ICI

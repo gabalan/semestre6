@@ -1,0 +1,151 @@
+COMMENTARY DOC
+Author : @author Ed Parrish
+Version : @version 1.0 3/17/04
+IDENTIFICATOR:include
+Sym :MINOR; Object :<; lin:9; col:9
+IDENTIFICATOR:iostream
+Sym :MAJOR; Object :>; lin:9; col:18
+IDENTIFICATOR:include
+Sym :MINOR; Object :<; lin:11; col:9
+IDENTIFICATOR:cmath
+Sym :MAJOR; Object :>; lin:11; col:15
+Sym :USING; Object :using; lin:12; col:0
+Sym :NAMESPACE; Object :namespace; lin:12; col:6
+IDENTIFICATOR:std
+Sym :SEMICOLON; Object :;; lin:12; col:19
+Sym :CONST; Object :const; lin:14; col:0
+Sym :DOUBLE; Object :double; lin:14; col:6
+IDENTIFICATOR:PI
+Sym :ASSIGN; Object :=; lin:14; col:16
+FLOAT:3.14159
+Sym :SEMICOLON; Object :;; lin:14; col:25
+COMMENTARY DOC
+Param : @param radius The radius of the circle.
+return : @return The area of the circle.
+Sym :DOUBLE; Object :double; lin:22; col:0
+IDENTIFICATOR:area
+Sym :PARENTHESE_IN; Object :(; lin:22; col:11
+Sym :DOUBLE; Object :double; lin:22; col:12
+IDENTIFICATOR:radius
+Sym :PARENTHESE_OUT; Object :); lin:22; col:25
+Sym :SEMICOLON; Object :;; lin:22; col:26
+COMMENTARY DOC
+Param : @param radius The radius of the circle.
+return : @return The volume of the sphere.
+Sym :DOUBLE; Object :double; lin:30; col:0
+IDENTIFICATOR:volume
+Sym :PARENTHESE_IN; Object :(; lin:30; col:13
+Sym :DOUBLE; Object :double; lin:30; col:14
+IDENTIFICATOR:radius
+Sym :PARENTHESE_OUT; Object :); lin:30; col:27
+Sym :SEMICOLON; Object :;; lin:30; col:28
+LINE COMMENTARY:// Controls operation of the program.
+Sym :INT; Object :int; lin:33; col:0
+IDENTIFICATOR:main
+Sym :PARENTHESE_IN; Object :(; lin:33; col:8
+Sym :VOID; Object :void; lin:33; col:9
+Sym :PARENTHESE_OUT; Object :); lin:33; col:13
+Sym :BRACKET_IN; Object :{; lin:33; col:15
+Sym :DOUBLE; Object :double; lin:34; col:4
+IDENTIFICATOR:radius_of_both
+Sym :COLON; Object :,; lin:34; col:25
+IDENTIFICATOR:area_of_circle
+Sym :COLON; Object :,; lin:34; col:41
+IDENTIFICATOR:volume_of_sphere
+Sym :SEMICOLON; Object :;; lin:34; col:59
+IDENTIFICATOR:cout
+Sym :LEFT_SHIFT; Object :<<; lin:36; col:9
+STRING:"Enter a radius to use for both a circle\n"
+Sym :LEFT_SHIFT; Object :<<; lin:37; col:12
+STRING:"and a sphere (in inches): "
+Sym :SEMICOLON; Object :;; lin:37; col:43
+IDENTIFICATOR:cin
+Sym :RIGHT_SHIFT; Object :>>; lin:38; col:8
+IDENTIFICATOR:radius_of_both
+Sym :SEMICOLON; Object :;; lin:38; col:25
+IDENTIFICATOR:area_of_circle
+Sym :ASSIGN; Object :=; lin:40; col:19
+IDENTIFICATOR:area
+Sym :PARENTHESE_IN; Object :(; lin:40; col:25
+IDENTIFICATOR:radius_of_both
+Sym :PARENTHESE_OUT; Object :); lin:40; col:40
+Sym :SEMICOLON; Object :;; lin:40; col:41
+IDENTIFICATOR:volume_of_sphere
+Sym :ASSIGN; Object :=; lin:41; col:21
+IDENTIFICATOR:volume
+Sym :PARENTHESE_IN; Object :(; lin:41; col:29
+IDENTIFICATOR:radius_of_both
+Sym :PARENTHESE_OUT; Object :); lin:41; col:44
+Sym :SEMICOLON; Object :;; lin:41; col:45
+IDENTIFICATOR:cout
+Sym :LEFT_SHIFT; Object :<<; lin:43; col:9
+STRING:"Radius = "
+Sym :LEFT_SHIFT; Object :<<; lin:43; col:24
+IDENTIFICATOR:radius_of_both
+Sym :LEFT_SHIFT; Object :<<; lin:43; col:42
+STRING:" inches\n"
+Sym :LEFT_SHIFT; Object :<<; lin:44; col:12
+STRING:"Area of circle = "
+Sym :LEFT_SHIFT; Object :<<; lin:44; col:35
+IDENTIFICATOR:area_of_circle
+Sym :LEFT_SHIFT; Object :<<; lin:45; col:12
+STRING:" square inches\n"
+Sym :LEFT_SHIFT; Object :<<; lin:46; col:12
+STRING:"Volume of sphere = "
+Sym :LEFT_SHIFT; Object :<<; lin:46; col:37
+IDENTIFICATOR:volume_of_sphere
+Sym :LEFT_SHIFT; Object :<<; lin:47; col:12
+STRING:" cubic inches\n"
+Sym :SEMICOLON; Object :;; lin:47; col:32
+Sym :RETURN; Object :return; lin:49; col:4
+NUMBER:0
+Sym :SEMICOLON; Object :;; lin:49; col:12
+Sym :BRACKET_OUT; Object :}; lin:50; col:0
+LINE COMMENTARY:// Returns the area of a circle with the specified radius.
+Sym :DOUBLE; Object :double; lin:53; col:0
+IDENTIFICATOR:area
+Sym :PARENTHESE_IN; Object :(; lin:53; col:11
+Sym :DOUBLE; Object :double; lin:53; col:12
+IDENTIFICATOR:radius
+Sym :PARENTHESE_OUT; Object :); lin:53; col:25
+Sym :BRACKET_IN; Object :{; lin:53; col:27
+Sym :RETURN; Object :return; lin:54; col:4
+Sym :PARENTHESE_IN; Object :(; lin:54; col:11
+IDENTIFICATOR:PI
+Sym :TIME; Object :*; lin:54; col:15
+IDENTIFICATOR:pow
+Sym :PARENTHESE_IN; Object :(; lin:54; col:20
+IDENTIFICATOR:radius
+Sym :COLON; Object :,; lin:54; col:27
+NUMBER:2
+Sym :PARENTHESE_OUT; Object :); lin:54; col:30
+Sym :PARENTHESE_OUT; Object :); lin:54; col:31
+Sym :SEMICOLON; Object :;; lin:54; col:32
+Sym :BRACKET_OUT; Object :}; lin:55; col:0
+LINE COMMENTARY:// Returns the volume of a sphere with the specified radius.
+Sym :DOUBLE; Object :double; lin:58; col:0
+IDENTIFICATOR:volume
+Sym :PARENTHESE_IN; Object :(; lin:58; col:13
+Sym :DOUBLE; Object :double; lin:58; col:14
+IDENTIFICATOR:radius
+Sym :PARENTHESE_OUT; Object :); lin:58; col:27
+Sym :BRACKET_IN; Object :{; lin:58; col:29
+Sym :RETURN; Object :return; lin:59; col:4
+Sym :PARENTHESE_IN; Object :(; lin:59; col:11
+Sym :PARENTHESE_IN; Object :(; lin:59; col:12
+FLOAT:4.0
+Sym :SLASH; Object :/; lin:59; col:17
+FLOAT:3.0
+Sym :PARENTHESE_OUT; Object :); lin:59; col:22
+Sym :TIME; Object :*; lin:59; col:24
+IDENTIFICATOR:PI
+Sym :TIME; Object :*; lin:59; col:29
+IDENTIFICATOR:pow
+Sym :PARENTHESE_IN; Object :(; lin:59; col:34
+IDENTIFICATOR:radius
+Sym :COLON; Object :,; lin:59; col:41
+NUMBER:3
+Sym :PARENTHESE_OUT; Object :); lin:59; col:44
+Sym :PARENTHESE_OUT; Object :); lin:59; col:45
+Sym :SEMICOLON; Object :;; lin:59; col:46
+Sym :BRACKET_OUT; Object :}; lin:60; col:0
