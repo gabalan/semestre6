@@ -1,0 +1,63 @@
+%class "ParserExp";
+
+%embed {:
+	static class Events extends beaver.Parser.Events
+	{
+		public void syntaxError(Symbol token)
+		{
+			System.err.format("Erreur de syntaxe en ligne %d, colonne %d. Token inattendu: %s\n",
+				Symbol.getLine(token.getStart()),
+				Symbol.getColumn(token.getStart()),
+				Terminals.NAMES[token.getId()]);
+		}
+	}
+:};
+
+%init {:
+	report = new Events();
+:};
+
+%terminals IDENT, CONST_INT, CONST_STRING, TYPE_INT, TYPE_STRING, LIST, MAPSTO, LPAR, RPAR, LBRACKET, RBRACKET, PLUS, MINUS, COMMA, COLON, SEMICOLON;
+
+%goal expression_typee;
+
+%left PLUS,MINUS;
+
+expression_typee= declaration_list expression
+                ;
+
+declaration_list=
+                | declaration_list declaration
+                ;
+
+declaration= IDENT COLON type SEMICOLON
+           ;
+
+type= type_simple
+    | LIST LPAR type RPAR
+    | LPAR type_list RPAR MAPSTO type
+    ;
+
+type_simple= TYPE_INT
+           | TYPE_STRING
+           ;
+
+type_list=
+         | type
+         | type_list COMMA type
+         ;
+
+expression= IDENT
+          | CONST_INT
+          | CONST_STRING
+          | expression PLUS expression
+          | expression MINUS expression
+          | LPAR expression RPAR
+          | LBRACKET expression_list RBRACKET
+          | expression LPAR expression_list RPAR
+          ;
+
+expression_list=
+               | expression
+               | expression_list COMMA expression
+               ;

@@ -1,0 +1,68 @@
+%import "abstractTree.*";
+%class "ParserExpr";
+
+%embed {: 
+
+static public class MyEvents extends beaver.Parser.Events {
+	
+	public void syntaxError(Symbol token) {
+		System.err.print("Erreur de syntaxe ligne ");
+		System.err.println(Symbol.getLine(token.getStart()));
+		System.err.print("Token inattendu: ");
+		System.err.println(Terminals.NAMES[token.getId()]);
+	}
+};
+
+:} ;
+
+%init {:
+	report = new MyEvents();
+:};
+
+// COMPLETER A PARTIR D'ICI
+
+%terminals PLUS, MINUS, TIMES, DIV, LPAR, RPAR;
+%terminals UFCT, BFCT, ID, INTEGER, FLOAT, PI, E;
+%terminals SEMI, EQ, COMMA;
+
+%right UNARY_MINUS;
+%left TIMES, DIV;
+%left PLUS, MINUS;
+
+%typeof PI, E, FLOAT = "Double";
+%typeof INTEGER = "Integer";
+%typeof ID, UFCT, BFCT = "String";
+%typeof Program, Declarations, Declaration, Expression = "AbstTree";
+
+%goal Program;
+
+Program = 
+	Declarations.d SEMI Expression.e {: return new Seq(d, e); :}
+	;
+
+Declarations = 
+	Declarations.d1 SEMI Declaration.d2 {: return new Seq(d1, d2); :}
+	| Declaration.d {: return d; :}
+	;
+
+Declaration =
+	ID.id EQ Expression.e {: return new Aff(e, id); :}
+	;
+	
+Expression = 
+	Expression.e1 PLUS Expression.e2  {: return new Plus(e1, e2); :}
+	| Expression.e1 MINUS Expression.e2 {: return new Minus(e1, e2); :}
+	| Expression.e1 TIMES Expression.e2 {: return new Times(e1, e2); :}
+	| Expression.e1 DIV Expression.e2 {: return new Div(e1, e2); :}
+	| MINUS Expression.e @ UNARY_MINUS {: return new Minus(e); :}
+	| LPAR Expression.e RPAR  {: return e; :}
+	| UFCT.fct LPAR Expression.e RPAR {: return new UFct(e, fct); :}
+	| BFCT.fct LPAR Expression.e1 COMMA Expression.e2 RPAR {: return new BFct(e1, e2, fct); :}
+	| ID.id {: return new Id(id); :}
+	| INTEGER.i {: return new IntExp(i); :}
+	| FLOAT.f {: return new FloatExp(f); :}
+	| PI.p {: return new FloatExp(p); :}
+	| E.e {: return new FloatExp(e); :}
+	;
+
+
