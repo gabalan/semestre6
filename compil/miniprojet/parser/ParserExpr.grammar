@@ -1,10 +1,10 @@
 %import "abstractTree.*";
 %class "ParserExpr";
 
-%embed {: 
+%embed {:
 
 static public class MyEvents extends beaver.Parser.Events {
-	
+
 	public void syntaxError(Symbol token) {
 		System.err.print("Erreur de syntaxe ligne ");
 		System.err.println(Symbol.getLine(token.getStart()));
@@ -19,6 +19,50 @@ static public class MyEvents extends beaver.Parser.Events {
 	report = new MyEvents();
 :};
 
+
+%terminals PLUS, MINUS, TIMES, DIV, LPAR, RPAR;
+%terminals UFCT, BFCT, ID, INTEGER, FLOAT, PI, E;
+%terminals SEMI, EQ, COMMA;
+
+%typeof PI, E, FLOAT = "Double";
+%typeof INTEGER = "Integer";
+%typeof ID, UFCT, BFCT = "String";
+%typeof Program, Declarations, Declaration, Expression = "AbstTree";
+
+%left RPAR;
+%right UNARY_MINUS;
+%left TIMES, DIV;
+%left PLUS, MINUS;
+
+
+
 %goal Program;
 
-// COMPLETER A PARTIR D'ICI
+Program =
+				Declarations SEMI Expression
+				;
+
+Declarations =
+						Declarations SEMI Declaration
+					| Declaration
+					;
+
+Declaration	 =
+					 ID EQ Expression
+					 ;
+
+Expression 	=
+					Expression PLUS Expression
+				| Expression MINUS Expression
+				| Expression TIMES Expression
+				| Expression DIV Expression
+				| MINUS Expression @ UNARY_MINUS
+				| LPAR Expression
+				| UFCT LPAR Expression RPAR
+				| BFCT LPAR Expression COMMA Expression RPAR
+				| ID
+				| INTEGER
+				| FLOAT
+				| PI
+				| E
+				;
