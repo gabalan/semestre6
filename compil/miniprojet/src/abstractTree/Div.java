@@ -1,0 +1,15 @@
+package abstractTree;
+
+public class Div extends AbstTree{
+
+	@Override
+	protected void peval(EnvironmentInt environment) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+public Div(AbstTree e1 ,AbstTree e2) {
+		
+		
+	}
+
+}

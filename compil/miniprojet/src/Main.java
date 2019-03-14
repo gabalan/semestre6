@@ -15,10 +15,10 @@ public class Main {
 	 	AbstTreeInt expr = (AbstTree) parser.parse(input);
 
 		// On doit pouvoir l'afficher
-		System.out.println(expr.toString());
+			System.out.println(expr.toString());
 
 		//  Il doit pouvoir s'évaluer avec un environnement
-		//	EnvironmentInt environment = new Environment();
+			EnvironmentInt environment = new Environment();
 			//expr.eval(environment);
 			//System.out.println("Résultat: " + expr.getValue());
 

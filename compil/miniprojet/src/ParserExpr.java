@@ -10,24 +10,13 @@ import java.util.ArrayList;
 public class ParserExpr extends Parser {
 
 	static final ParsingTables PARSING_TABLES = new ParsingTables(
-		"U9pLaKjBmr0GXK$Is8SrscjR7$LjjIktRjswTI62Qq445u8ReTMgM51H4DV#Hr$r$HfFRgO" +
-		"bfFe3Ek6RCtFka6Iu06xWOm0pAC9W71EOn9HrnhhB4K4A7gQPv#3ABUPPPP15Z#OK2kqgq9" +
-		"5sLmeh#RAQK3#9D7hHXtxaC8WyXZ2CKVd1BChopUp0vQnd9rESpNIb0tg6#pbsnm9F7MwTv" +
-		"TvXThX$gmeqr#7xLdtjJEHn5MDlAyn0vGWsjaXL6DGDaYOxn90QAUbSMNL1TP7KoHLP8flg" +
-		"NvDbiarMo6xW$mNZd9oHTR97Bic5dgsfhgfMLMkg#we7gdNLmyZxZsFVEr5j$FTFiVdJM5z" +
-		"19EIJV91tyaPUoOkUFKVcdgGfZ$8WztB7hXbvXR4tdRS4Dv#W4wTrUnv94gU3uY$Rors4");
-
-	static final Action RETURN3 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 3];
-		}
-	};
-
-	static final Action RETURN2 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 2];
-		}
-	};
+		"U9pLaabB0q4GXTyiPf8ODPqObxWRJIvUlNhrwa44pu8AWWT1mOCn10KL1V7iRtIB#rQ#wIb" +
+		"b6FK7f8UlNjMhdfxfdW5mYIxqO19zA604enZ3k7M6syiHGG0V4upJSEKALMOPTA93Om2ZMG" +
+		"ebLjwF7#gWLcaCHPcyMyqYXsxaKKGl#Z60idoYWYdvO7JWSXNVhXZmpanREg1dU8uE2NVfC" +
+		"SjovpcD3lSVPOQPmvF$zaFDntfH5lMDNgvYx1UB8b1hm8vriYaSr1MI9Zl4a2OfwxoAwepg" +
+		"B5dL$9pCaGsjByWysI8BP3Vq$uBZX1oJPL8dP#HKUqkgYwfhgjkgUwfrrNtLHk8PpKHze7h" +
+		"uttibvXybwXfYGzx8AtaXp#J9ke$QVOZDl9UMtCcjtCWrgrPi4ME$Uj4I$WKUdIIkgazInF" +
+		"b5wGly6Lxx");
 
 
 static public class MyEvents extends beaver.Parser.Events {
@@ -45,39 +34,141 @@ static public class MyEvents extends beaver.Parser.Events {
 	public ParserExpr() {
 		super(PARSING_TABLES);
 		actions = new Action[] {
-			RETURN3,	// [0] Program = Declarations SEMI Expression; returns 'Expression' although none is marked
-			new Action() {	// [1] Declarations = Declarations SEMI Declaration
+			new Action() {	// [0] Program = Declarations.d SEMI Expression.e
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					((ArrayList) _symbols[offset + 1].value).add(_symbols[offset + 3].value); return _symbols[offset + 1];
+					final Symbol _symbol_d = _symbols[offset + 1];
+					final AbstTree d = (AbstTree) _symbol_d.value;
+					final Symbol _symbol_e = _symbols[offset + 3];
+					final AbstTree e = (AbstTree) _symbol_e.value;
+					 return new Seq(d, e);
 				}
 			},
-			new Action() {	// [2] Declarations = Declaration
+			new Action() {	// [1] Declarations = Declarations.d1 SEMI Declaration.d2
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					ArrayList lst = new ArrayList(); lst.add(_symbols[offset + 1].value); return new Symbol(lst);
+					final Symbol _symbol_d1 = _symbols[offset + 1];
+					final AbstTree d1 = (AbstTree) _symbol_d1.value;
+					final Symbol _symbol_d2 = _symbols[offset + 3];
+					final AbstTree d2 = (AbstTree) _symbol_d2.value;
+					 return new Seq(d1, d2);
 				}
 			},
-			RETURN3,	// [3] Declaration = ID EQ Expression; returns 'Expression' although none is marked
-			RETURN3,	// [4] Expression = Expression PLUS Expression; returns 'Expression' although none is marked
-			RETURN3,	// [5] Expression = Expression MINUS Expression; returns 'Expression' although none is marked
-			RETURN3,	// [6] Expression = Expression TIMES Expression; returns 'Expression' although none is marked
-			RETURN3,	// [7] Expression = Expression DIV Expression; returns 'Expression' although none is marked
-			RETURN2,	// [8] Expression = MINUS Expression; returns 'Expression' although none is marked
-			RETURN2,	// [9] Expression = LPAR Expression; returns 'Expression' although none is marked
-			new Action() {	// [10] Expression = UFCT LPAR Expression RPAR
+			new Action() {	// [2] Declarations = Declaration.d
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					System.out.println("fonction unaire"); return new Symbol (0);
+					final Symbol _symbol_d = _symbols[offset + 1];
+					final AbstTree d = (AbstTree) _symbol_d.value;
+					 return d;
 				}
 			},
-			new Action() {	// [11] Expression = BFCT LPAR Expression COMMA Expression RPAR
+			new Action() {	// [3] Declaration = ID.id EQ Expression.e
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					System.out.println("je vois une fonction binaire");return new Symbol(0);
+					final Symbol _symbol_id = _symbols[offset + 1];
+					final String id = (String) _symbol_id.value;
+					final Symbol _symbol_e = _symbols[offset + 3];
+					final AbstTree e = (AbstTree) _symbol_e.value;
+					 return new Aff(e, id);
 				}
 			},
-			Action.RETURN,	// [12] Expression = ID
-			Action.RETURN,	// [13] Expression = INTEGER
-			Action.RETURN,	// [14] Expression = FLOAT
-			Action.RETURN,	// [15] Expression = PI
-			Action.RETURN	// [16] Expression = E
+			new Action() {	// [4] Expression = Expression.e1 PLUS Expression.e2
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e1 = _symbols[offset + 1];
+					final AbstTree e1 = (AbstTree) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 3];
+					final AbstTree e2 = (AbstTree) _symbol_e2.value;
+					 return new Plus(e1, e2);
+				}
+			},
+			new Action() {	// [5] Expression = Expression.e1 MINUS Expression.e2
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e1 = _symbols[offset + 1];
+					final AbstTree e1 = (AbstTree) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 3];
+					final AbstTree e2 = (AbstTree) _symbol_e2.value;
+					 return new Minus(e1, e2);
+				}
+			},
+			new Action() {	// [6] Expression = Expression.e1 TIMES Expression.e2
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e1 = _symbols[offset + 1];
+					final AbstTree e1 = (AbstTree) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 3];
+					final AbstTree e2 = (AbstTree) _symbol_e2.value;
+					 return new Times(e1, e2);
+				}
+			},
+			new Action() {	// [7] Expression = Expression.e1 DIV Expression.e2
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e1 = _symbols[offset + 1];
+					final AbstTree e1 = (AbstTree) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 3];
+					final AbstTree e2 = (AbstTree) _symbol_e2.value;
+					 return new Div(e1, e2);
+				}
+			},
+			new Action() {	// [8] Expression = MINUS Expression.e
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e = _symbols[offset + 2];
+					final AbstTree e = (AbstTree) _symbol_e.value;
+					 return new Minus(e);
+				}
+			},
+			new Action() {	// [9] Expression = LPAR Expression.e RPAR
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e = _symbols[offset + 2];
+					final AbstTree e = (AbstTree) _symbol_e.value;
+					 return e;
+				}
+			},
+			new Action() {	// [10] Expression = UFCT LPAR Expression.e RPAR
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e = _symbols[offset + 3];
+					final AbstTree e = (AbstTree) _symbol_e.value;
+					 return new UFct(e, fct);
+				}
+			},
+			new Action() {	// [11] Expression = BFCT LPAR Expression.e1 COMMA Expression.e2 RPAR
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e1 = _symbols[offset + 3];
+					final AbstTree e1 = (AbstTree) _symbol_e1.value;
+					final Symbol _symbol_e2 = _symbols[offset + 5];
+					final AbstTree e2 = (AbstTree) _symbol_e2.value;
+					 return new BFct(e1, e2, fct);
+				}
+			},
+			new Action() {	// [12] Expression = ID.id
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_id = _symbols[offset + 1];
+					final String id = (String) _symbol_id.value;
+					 return new Id(id);
+				}
+			},
+			new Action() {	// [13] Expression = INTEGER.id
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_id = _symbols[offset + 1];
+					final Integer id = (Integer) _symbol_id.value;
+					 return new IntExp(i);
+				}
+			},
+			new Action() {	// [14] Expression = FLOAT.f
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_f = _symbols[offset + 1];
+					final Double f = (Double) _symbol_f.value;
+					 return new FloatExp(f);
+				}
+			},
+			new Action() {	// [15] Expression = PI.p
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_p = _symbols[offset + 1];
+					final Double p = (Double) _symbol_p.value;
+					 return new FloatExp(p);
+				}
+			},
+			new Action() {	// [16] Expression = E.e
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_e = _symbols[offset + 1];
+					final Double e = (Double) _symbol_e.value;
+					 return new FloatExp(e);
+				}
+			}
 		};
 
 

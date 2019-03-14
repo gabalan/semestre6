@@ -33,36 +33,36 @@ static public class MyEvents extends beaver.Parser.Events {
 %right UNARY_MINUS;
 %left TIMES, DIV;
 %left PLUS, MINUS;
-%right LPAR;
+
 
 
 %goal Program;
 
 Program =
-				Declarations SEMI Expression
+				Declarations.d SEMI Expression.e {: return new Seq(d, e); :}
 				;
 
 Declarations =
-						Declarations SEMI Declaration
-					| Declaration
+						Declarations.d1 SEMI Declaration.d2 {: return new Seq(d1, d2); :}
+					| Declaration.d {: return d; :}
 					;
 
 Declaration	 =
-					 ID EQ Expression
+					 ID.id EQ Expression.e {: return new Aff(e, id); :}
 					 ;
 
 Expression 	=
-					Expression PLUS Expression
-				| Expression MINUS Expression
-				| Expression TIMES Expression
-				| Expression DIV Expression
-				| MINUS Expression @ UNARY_MINUS
-				| LPAR Expression
-				| UFCT LPAR Expression RPAR {:System.out.println("fonction unaire"); return new Symbol (0);:}
-				| BFCT LPAR Expression COMMA Expression RPAR{:System.out.println("je vois une fonction binaire");return new Symbol(0);:}
-				| ID
-				| INTEGER
-				| FLOAT
-				| PI
-				| E
+					Expression.e1 PLUS Expression.e2 {: return new Plus(e1, e2); :}
+				| Expression.e1 MINUS Expression.e2 {: return new Minus(e1, e2); :}
+				| Expression.e1 TIMES Expression.e2  {: return new Times(e1, e2); :}
+				| Expression.e1 DIV Expression.e2		{: return new Div(e1, e2); :}
+				| MINUS Expression.e @ UNARY_MINUS  {: return new Minus(e); :}
+				| LPAR Expression.e RPAR					{: return e; :}
+				| UFCT LPAR Expression.e RPAR 		{: return new UFct(e, fct); :}
+				| BFCT LPAR Expression.e1 COMMA Expression.e2 RPAR  {: return new BFct(e1, e2, fct); :}
+				| ID.id {: return new Id(id); :}
+				| INTEGER.id {: return new IntExp(i); :}
+				| FLOAT.f 	{: return new FloatExp(f); :}
+				| PI.p			{: return new FloatExp(p); :}
+				| E.e				{: return new FloatExp(e); :}
 				;
