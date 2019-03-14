@@ -29,18 +29,6 @@ public class ParserExpr extends Parser {
 		}
 	};
 
-	static final Action RETURN4 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 4];
-		}
-	};
-
-	static final Action RETURN6 = new Action() {
-		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 6];
-		}
-	};
-
 
 static public class MyEvents extends beaver.Parser.Events {
 
@@ -75,8 +63,16 @@ static public class MyEvents extends beaver.Parser.Events {
 			RETURN3,	// [7] Expression = Expression DIV Expression; returns 'Expression' although none is marked
 			RETURN2,	// [8] Expression = MINUS Expression; returns 'Expression' although none is marked
 			RETURN2,	// [9] Expression = LPAR Expression; returns 'Expression' although none is marked
-			RETURN4,	// [10] Expression = UFCT LPAR Expression RPAR; returns 'RPAR' although none is marked
-			RETURN6,	// [11] Expression = BFCT LPAR Expression COMMA Expression RPAR; returns 'RPAR' although none is marked
+			new Action() {	// [10] Expression = UFCT LPAR Expression RPAR
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					System.out.println("fonction unaire"); return new Symbol (0);
+				}
+			},
+			new Action() {	// [11] Expression = BFCT LPAR Expression COMMA Expression RPAR
+				public Symbol reduce(Symbol[] _symbols, int offset) {
+					System.out.println("je vois une fonction binaire");return new Symbol(0);
+				}
+			},
 			Action.RETURN,	// [12] Expression = ID
 			Action.RETURN,	// [13] Expression = INTEGER
 			Action.RETURN,	// [14] Expression = FLOAT

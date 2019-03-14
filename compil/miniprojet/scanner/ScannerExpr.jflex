@@ -22,7 +22,7 @@ Integer = [0-9]+
 Decimal = ({Integer}(\.{Integer})?)|(\.{Integer})
 Float = [+-]?{Decimal}([eE][+-]?{Integer})?
 Unary =	sqrt |sin | round |cos | tan | abs
-Binary = multiplyExact|addExact|min|max
+Binary =min|max
 
 %%
 

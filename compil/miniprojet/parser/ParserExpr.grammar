@@ -33,7 +33,7 @@ static public class MyEvents extends beaver.Parser.Events {
 %right UNARY_MINUS;
 %left TIMES, DIV;
 %left PLUS, MINUS;
-
+%right LPAR;
 
 
 %goal Program;
@@ -58,8 +58,8 @@ Expression 	=
 				| Expression DIV Expression
 				| MINUS Expression @ UNARY_MINUS
 				| LPAR Expression
-				| UFCT LPAR Expression RPAR
-				| BFCT LPAR Expression COMMA Expression RPAR
+				| UFCT LPAR Expression RPAR {:System.out.println("fonction unaire"); return new Symbol (0);:}
+				| BFCT LPAR Expression COMMA Expression RPAR{:System.out.println("je vois une fonction binaire");return new Symbol(0);:}
 				| ID
 				| INTEGER
 				| FLOAT
