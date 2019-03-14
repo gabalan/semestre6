@@ -7,6 +7,8 @@ public class IntExp extends AbstTree{
 		// TODO Auto-generated method stub
 		
 	}
-	
+	public IntExp(int i) {
+		
+	}
 
 }

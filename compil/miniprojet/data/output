@@ -1,4 +1,2 @@
-fonction unaire
-fonction unaire
 
-je vois une fonction binaire
+Seq(Seq(Aff(Div(FloatExp,IntExp)),Aff(Minus)),Div(UFct(Times(Id,IntExp)),IntExp))

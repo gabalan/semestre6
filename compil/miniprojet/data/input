@@ -1,1 +1,1 @@
-angle1 = pi/4;resul=5; resultat = sqrt(2) / 2 - sin(angle1); max (resultat , resul)
+angle1 = pi/4; resultat = sqrt(2) / 2 - sin(angle1); round(resultat * 1000) / 1000

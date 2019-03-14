@@ -8,7 +8,7 @@ public class UFct extends AbstTree{
 		
 	}
 public UFct(AbstTree e1 ,String f) {
-		
+		super(e1);
 		
 	}
 

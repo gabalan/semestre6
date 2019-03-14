@@ -8,6 +8,7 @@ public class Times extends AbstTree{
 		
 	}
 public Times(AbstTree e1 ,AbstTree e2) {
+	super(e1,e2);
 		
 		
 	}

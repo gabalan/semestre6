@@ -11,6 +11,10 @@ public class Minus extends AbstTree{
 		
 		
 	}
+public Minus(AbstTree e) {
+		super(e);
+		
+	}
 	
 
 }

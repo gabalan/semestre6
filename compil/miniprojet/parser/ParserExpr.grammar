@@ -58,10 +58,10 @@ Expression 	=
 				| Expression.e1 DIV Expression.e2		{: return new Div(e1, e2); :}
 				| MINUS Expression.e @ UNARY_MINUS  {: return new Minus(e); :}
 				| LPAR Expression.e RPAR					{: return e; :}
-				| UFCT LPAR Expression.e RPAR 		{: return new UFct(e, fct); :}
-				| BFCT LPAR Expression.e1 COMMA Expression.e2 RPAR  {: return new BFct(e1, e2, fct); :}
+				| UFCT.fct LPAR Expression.e RPAR 		{: return new UFct(e, fct); :}
+				| BFCT.fct LPAR Expression.e1 COMMA Expression.e2 RPAR  {: return new BFct(e1, e2, fct); :}
 				| ID.id {: return new Id(id); :}
-				| INTEGER.id {: return new IntExp(i); :}
+				| INTEGER.i {: return new IntExp(i); :}
 				| FLOAT.f 	{: return new FloatExp(f); :}
 				| PI.p			{: return new FloatExp(p); :}
 				| E.e				{: return new FloatExp(e); :}

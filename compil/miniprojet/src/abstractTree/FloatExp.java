@@ -7,6 +7,9 @@ public class FloatExp extends AbstTree{
 		// TODO Auto-generated method stub
 		
 	}
+	public FloatExp(Double e1) {
+		super();
+	}
 	
 
 }

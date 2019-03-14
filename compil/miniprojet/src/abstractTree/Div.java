@@ -8,6 +8,7 @@ public class Div extends AbstTree{
 		
 	}
 public Div(AbstTree e1 ,AbstTree e2) {
+	super(e1,e2);
 		
 		
 	}

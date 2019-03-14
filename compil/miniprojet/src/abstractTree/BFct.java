@@ -8,6 +8,7 @@ public class BFct extends AbstTree {
 		
 	}
 public BFct(AbstTree e1 ,AbstTree e2,String f) {
+	super(e1,e2);
 		
 		
 	}

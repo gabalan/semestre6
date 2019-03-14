@@ -118,15 +118,19 @@ static public class MyEvents extends beaver.Parser.Events {
 					 return e;
 				}
 			},
-			new Action() {	// [10] Expression = UFCT LPAR Expression.e RPAR
+			new Action() {	// [10] Expression = UFCT.fct LPAR Expression.e RPAR
 				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_fct = _symbols[offset + 1];
+					final String fct = (String) _symbol_fct.value;
 					final Symbol _symbol_e = _symbols[offset + 3];
 					final AbstTree e = (AbstTree) _symbol_e.value;
 					 return new UFct(e, fct);
 				}
 			},
-			new Action() {	// [11] Expression = BFCT LPAR Expression.e1 COMMA Expression.e2 RPAR
+			new Action() {	// [11] Expression = BFCT.fct LPAR Expression.e1 COMMA Expression.e2 RPAR
 				public Symbol reduce(Symbol[] _symbols, int offset) {
+					final Symbol _symbol_fct = _symbols[offset + 1];
+					final String fct = (String) _symbol_fct.value;
 					final Symbol _symbol_e1 = _symbols[offset + 3];
 					final AbstTree e1 = (AbstTree) _symbol_e1.value;
 					final Symbol _symbol_e2 = _symbols[offset + 5];
@@ -141,10 +145,10 @@ static public class MyEvents extends beaver.Parser.Events {
 					 return new Id(id);
 				}
 			},
-			new Action() {	// [13] Expression = INTEGER.id
+			new Action() {	// [13] Expression = INTEGER.i
 				public Symbol reduce(Symbol[] _symbols, int offset) {
-					final Symbol _symbol_id = _symbols[offset + 1];
-					final Integer id = (Integer) _symbol_id.value;
+					final Symbol _symbol_i = _symbols[offset + 1];
+					final Integer i = (Integer) _symbol_i.value;
 					 return new IntExp(i);
 				}
 			},

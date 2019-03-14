@@ -8,7 +8,7 @@ public class Plus extends  AbstTree {
 		
 	}
 	public Plus(AbstTree e1 ,AbstTree e2) {
-		
+		super(e1,e2);
 		
 	}
 

@@ -8,7 +8,7 @@ public class Id extends AbstTree{
 		
 	}
 	public Id(String Id) {
-		
+		super();
 	}
 
 }
