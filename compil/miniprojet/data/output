@@ -1,2 +1,9 @@
+4
+2
+2
+1000
 
+1000
 Seq(Seq(Aff(Div(FloatExp,IntExp)),Aff(Minus)),Div(UFct(Times(Id,IntExp)),IntExp))
+Eval:Seq(Seq(Aff(Div(FloatExp,IntExp)),Aff(Minus)),Div(UFct(Times(Id,IntExp)),IntExp))
+Résultat: null

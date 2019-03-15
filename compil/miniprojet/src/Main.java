@@ -19,8 +19,8 @@ public class Main {
 
 		//  Il doit pouvoir s'évaluer avec un environnement
 			EnvironmentInt environment = new Environment();
-			//expr.eval(environment);
-			//System.out.println("Résultat: " + expr.getValue());
+			expr.eval(environment);
+			System.out.println("Résultat: " + expr.getValue());
 
 	}
 }
