@@ -4,6 +4,6 @@
 1000
 
 1000
-Seq(Seq(Aff(Div(FloatExp,IntExp)),Aff(Minus)),Div(UFct(Times(Id,IntExp)),IntExp))
-Eval:Seq(Seq(Aff(Div(FloatExp,IntExp)),Aff(Minus)),Div(UFct(Times(Id,IntExp)),IntExp))
+Seq(Seq(Aff(Div( 3.141592653589793, 4)),Aff(Minus(Div(sqrt(null), 2),sin(null)))),Div(round(null), 1000))
+Eval:Seq(Seq(Aff(Div( 3.141592653589793, 4)),Aff(Minus(Div(sqrt(null), 2),sin(null)))),Div(round(null), 1000))
 Résultat: null

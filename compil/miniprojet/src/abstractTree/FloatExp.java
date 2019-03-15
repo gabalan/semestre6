@@ -8,8 +8,12 @@ public class FloatExp extends AbstTree{
 
 	}
 	public FloatExp(Double e1) {
-		super.value=e1;
+		super();
+		this.val=e1;
 	}
 
+	public String toString(){
 
+		return " "+this.val;
+	}
 }
