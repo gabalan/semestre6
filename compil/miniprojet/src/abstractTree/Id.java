@@ -11,5 +11,7 @@ public class Id extends AbstTree{
 		super();
 		this.id=Id;
 	}
-
+public String toString(){
+	return id;
+}
 }

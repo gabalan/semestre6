@@ -16,7 +16,7 @@ public UFct(AbstTree e1 ,String f) {
 	}
 	public String toString(){
 
-		return this.f+"("+this.e1.getValue()+")";
+		return this.f+"("+this.e1+")";
 	}
 
 }

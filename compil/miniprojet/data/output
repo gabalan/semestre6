@@ -4,6 +4,6 @@
 1000
 
 1000
-Seq(Seq(Aff(Div( 3.141592653589793, 4)),Aff(Minus(Div(sqrt(null), 2),sin(null)))),Div(round(null), 1000))
-Eval:Seq(Seq(Aff(Div( 3.141592653589793, 4)),Aff(Minus(Div(sqrt(null), 2),sin(null)))),Div(round(null), 1000))
+Seq(Seq(Aff(Div( 3.141592653589793, 4),angle1),Aff(Minus(Div(sqrt( 2), 2),sin(angle1)),resultat)),Div(round(Times(resultat, 1000)), 1000))
+Eval:Seq(Seq(Aff(Div( 3.141592653589793, 4),angle1),Aff(Minus(Div(sqrt( 2), 2),sin(angle1)),resultat)),Div(round(Times(resultat, 1000)), 1000))
 Résultat: null
