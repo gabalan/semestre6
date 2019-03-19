@@ -43,13 +43,13 @@ Program =
 				;
 
 Declarations =
-						Declarations.d1 SEMI Declaration.d2 {: return new Seq(d1, d2); :}
-					| Declaration.d {: return d; :}
-					;
+				 Declarations.d1 SEMI Declaration.d2 {: return new Seq(d1, d2); :}
+				| Declaration.d {: return d; :}
+				;
 
 Declaration	 =
-					 ID.id EQ Expression.e {: return new Aff(e, id); :}
-					 ;
+				 ID.id EQ Expression.e {: return new Aff(e, id); :}
+				;
 
 Expression 	=
 					Expression.e1 PLUS Expression.e2 {: return new Plus(e1, e2); :}

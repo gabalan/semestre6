@@ -24,7 +24,7 @@ public abstract class AbstTree extends Symbol implements AbstTreeInt {
 	public AbstTree() {
 		super();
 	}
-	
+
 	// Renvoie la valeur calculée pour ce noeud
 	public Double getValue() {
 		return value;
@@ -43,7 +43,7 @@ public abstract class AbstTree extends Symbol implements AbstTreeInt {
 
 	// Affichage de l'arbre et évaluation
 	public void eval(EnvironmentInt environment) throws Exception {System.out.println("Eval:" + toString()); this.peval(environment);};
-	
-	// Méthode virtuelle pure que vous devez écrire dans les classes dérivées de celle-ci
+
+
 	abstract protected void peval(EnvironmentInt environment) throws Exception;
 }

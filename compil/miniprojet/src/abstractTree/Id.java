@@ -4,7 +4,8 @@ public class Id extends AbstTree{
 	private String id;
 	@Override
 	protected void peval(EnvironmentInt environment) throws Exception {
-		// TODO Auto-generated method stub
+		super.value= environment.getVariableValue(this.id);
+
 
 	}
 	public Id(String Id) {
@@ -14,4 +15,5 @@ public class Id extends AbstTree{
 public String toString(){
 	return id;
 }
+
 }

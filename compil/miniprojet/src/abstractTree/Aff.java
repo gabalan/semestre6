@@ -1,21 +1,15 @@
 package abstractTree;
-
 public class Aff extends AbstTree {
 	String s;
-	AbstTree t;
 	@Override
 	protected void peval(EnvironmentInt environment) throws Exception {
-		// TODO Auto-generated method stub
+		//left.peval(environment);
+		right.peval(environment);
+		environment.putVariable(s, right.getValue()) ;
+		super.value=right.getValue();
 	}
-	public Aff(AbstTree t,String s) {
-		//super(t);
-		super();
+	public Aff(AbstTree right,String s) {
+		super(new Id(s),right);
 		this.s=s;
-		this.t=t;
-
-	}
-	public String toString(){
-
-		return "Aff("+this.t+","+this.s+")";
 	}
 }
