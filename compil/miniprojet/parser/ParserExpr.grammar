@@ -56,7 +56,7 @@ Expression 	=
 				| Expression.e1 MINUS Expression.e2 {: return new Minus(e1, e2); :}
 				| Expression.e1 TIMES Expression.e2  {: return new Times(e1, e2); :}
 				| Expression.e1 DIV Expression.e2		{: return new Div(e1, e2); :}
-				| MINUS Expression.e @ UNARY_MINUS  {: return new Minus(e); :}
+				| MINUS Expression.e @ UNARY_MINUS  {: return new UMinus(e); :}
 				| LPAR Expression.e RPAR					{: return e; :}
 				| UFCT.fct LPAR Expression.e RPAR 		{: return new UFct(e, fct); :}
 				| BFCT.fct LPAR Expression.e1 COMMA Expression.e2 RPAR  {: return new BFct(e1, e2, fct); :}

@@ -16,7 +16,6 @@ public class UFct extends AbstTree{
 			break;
 			case "round" :
 			super.value=(double)Math.round(value);
-			left.value=super.value;
 			break;
 			case "tan" :
 			super.value=Math.tan(value);

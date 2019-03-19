@@ -4,13 +4,28 @@ public class BFct extends AbstTree {
 	private String bfct;
 	@Override
 	protected void peval(EnvironmentInt environment) throws Exception {
-		// TODO Auto-generated method stub
+		left.peval(environment);
+		right.peval(environment);
+		double value_left=left.getValue();
+		double value_right=left.getValue();
+		switch(this.bfct){
+			case "min":
+			super.value=Math.min(value_left,value_right);
+			break;
+			case "max":
+			super.value=Math.max(value_left,value_right);
+			break;
+			case "pow" :
+			super.value=(double)Math.pow(value_left,value_right);
+			break;
+			default:
+			break;
+		}
 
 	}
-public BFct(AbstTree e1 ,AbstTree e2,String f) {
-	super(e1,e2);
-
-		this.bfct=f;
+public BFct(AbstTree left ,AbstTree right,String func) {
+	super(left,right);
+		this.bfct=func;
 	}
 	public String toString(){
 
