@@ -1,0 +1,10 @@
+
+Seq(Seq(Seq(Aff(angle1,Div(3.141592653589793,4.0)),Aff(resultat,Minus(Div(sqrt(2.0),2.0),sin(angle1)))),Aff(value2,17.0)),max)
+Eval:Seq(Seq(Seq(Aff(angle1,Div(3.141592653589793,4.0)),Aff(resultat,Minus(Div(sqrt(2.0),2.0),sin(angle1)))),Aff(value2,17.0)),max)
+Enregistre angle1 0.7853981633974483
+Retrouve angle1 0.7853981633974483
+Enregistre resultat 1.1102230246251565E-16
+Enregistre value2 17.0
+Retrouve value2 17.0
+Retrouve angle1 0.7853981633974483
+Résultat: 17.0

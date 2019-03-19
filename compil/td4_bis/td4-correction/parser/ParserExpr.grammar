@@ -1,0 +1,73 @@
+%class "ParserExpr";
+
+%embed {: 
+
+static public class MyEvents extends beaver.Parser.Events {
+	
+	public void syntaxError(Symbol token) {
+		System.err.print("Erreur de syntaxe en ligne ");
+		System.err.println(Symbol.getLine(token.getStart()));
+		System.err.print("Token inattendu: ");
+		System.err.println(Terminals.NAMES[token.getId()]);
+	}
+};
+
+:} ;
+
+%init {:
+	report = new MyEvents();
+:};
+
+%terminals TOKEN_PLUS, TOKEN_MINUS, TOKEN_TIMES, TOKEN_DIV, TOKEN_NUMBER;
+%terminals TOKEN_LT, TOKEN_LE, TOKEN_GT, TOKEN_GE, TOKEN_EQ, TOKEN_NE;
+%terminals TOKEN_AND, TOKEN_OR, TOKEN_NOT, TOKEN_TRUE, TOKEN_FALSE;
+%terminals TOKEN_LPAR, TOKEN_RPAR;
+
+%typeof exprArithm = "ExprArithm";
+%typeof exprComp, exprLog = "ExprLog";
+%typeof TOKEN_NUMBER = "Double";
+
+%right TOKEN_UNARY_MINUS;
+%left  TOKEN_TIMES, TOKEN_DIV;
+%left  TOKEN_PLUS, TOKEN_MINUS;
+%left  TOKEN_NOT;
+%left  TOKEN_AND;
+%left  TOKEN_OR;
+
+%goal expr;
+
+expr = 
+		exprArithm.e {: return e; :}
+	|	exprLog.e {: return e; :}
+	;
+
+exprArithm = 
+		exprArithm.e1 TOKEN_PLUS exprArithm.e2  {: return new ExprArithm(e1.getValue() + e2.getValue()); :}
+	| 	exprArithm.e1 TOKEN_MINUS exprArithm.e2  {: return new ExprArithm(e1.getValue() - e2.getValue()); :}
+	| 	exprArithm.e1 TOKEN_TIMES exprArithm.e2  {: return new ExprArithm(e1.getValue() * e2.getValue()); :}
+	| 	exprArithm.e1 TOKEN_DIV exprArithm.e2  {: return new ExprArithm(e1.getValue() / e2.getValue()); :}
+	| 	TOKEN_MINUS exprArithm.e  @TOKEN_UNARY_MINUS {: return new ExprArithm(- e.getValue()); :}
+	| 	TOKEN_LPAR exprArithm.e TOKEN_RPAR {: return e; :}
+	| 	TOKEN_NUMBER.e {: return new ExprArithm(e); :}
+	;
+
+exprComp = 
+		exprArithm.e1 TOKEN_LT exprArithm.e2  {: return new ExprLog(e1.getValue() < e2.getValue()); :}
+	|	exprArithm.e1 TOKEN_LE exprArithm.e2  {: return new ExprLog(e1.getValue() <= e2.getValue()); :}
+	|	exprArithm.e1 TOKEN_GT exprArithm.e2  {: return new ExprLog(e1.getValue() > e2.getValue()); :}
+	|	exprArithm.e1 TOKEN_GE exprArithm.e2  {: return new ExprLog(e1.getValue() >= e2.getValue()); :}
+	|	exprArithm.e1 TOKEN_EQ exprArithm.e2  {: return new ExprLog(e1.getValue() == e2.getValue()); :}
+	|	exprArithm.e1 TOKEN_NE exprArithm.e2  {: return new ExprLog(e1.getValue() != e2.getValue()); :}
+	| 	TOKEN_LPAR exprComp.e TOKEN_RPAR {: return e; :}
+	;
+
+exprLog = 
+		exprLog.e1 TOKEN_AND exprLog.e2  {: return new ExprLog(e1.getValue() && e2.getValue()); :}
+	|	exprLog.e1 TOKEN_OR exprLog.e2  {: return new ExprLog(e1.getValue() || e2.getValue()); :}
+	|	TOKEN_NOT exprLog.e  {: return new ExprLog(!e.getValue()); :}
+	| 	TOKEN_LPAR exprLog.e TOKEN_RPAR {: return e; :}
+	| 	TOKEN_TRUE {: return new ExprLog(true); :}
+	| 	TOKEN_FALSE {: return new ExprLog(false); :}
+	|	exprComp.e {: return e; :}
+	;
+		
