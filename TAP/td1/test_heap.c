@@ -21,9 +21,9 @@ void print_heap(heap h, char format[]) {
   int n = 0; // n=nombre d'éléments affichés
   int p = 0; // p=hauteur
 
-  while (n < h->size) {
+  while (n < h->n) {
     k = (1 << p);
-    for (i = 0; (i < k) && (n < h->size); i++, n++)
+    for (i = 0; (i < k) && (n < h->n); i++, n++)
       printf(format, *(int *)h->array[n + 1]);
     printf("\n");
     p++;
@@ -37,15 +37,15 @@ void print_heap(heap h, char format[]) {
 int main(int argc, char *argv[]) {
   srandom(time(NULL));
   // srandom(1);
-  int n =9;
-  int  S[n];
-int T[]={10,11,9,8,11,13,12,10,7};
+  int n = (argv[1] && atoi(argv[1])) ? atoi(argv[1]) : 15;
+  int T[n], S[n];
   heap h;
   int i;
   char fmt[] = "%02i ";
 
   printf("\nunsorted array: ");
   for (i = 0; i < n; i++) {
+    T[i] = random() % 100;
     printf(fmt, T[i]);
   }
   printf("\n\n");
@@ -59,7 +59,6 @@ int T[]={10,11,9,8,11,13,12,10,7};
       break;
     print_heap(h, fmt);
   }
-  printf("%s\n","fini l'ajout" );
 
   for (i = 0; i < n; i++) {
     S[i] = *(int *)heap_pop(h);

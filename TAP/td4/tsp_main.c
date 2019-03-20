@@ -1,6 +1,6 @@
 #include "tools.h"
 
-#include "tsp_brute_force.c"
+//#include "tsp_brute_force.c"
 //#include "tsp_prog_dyn.c"
 //#include "tsp_approx.c"
 //#include "tsp_mst.c"
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     }
     printf("\n");
   }
-  
+
   /*
   {
     printf("*** brute-force optimisé ***\n");

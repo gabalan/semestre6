@@ -10,11 +10,11 @@
 //  f     = fonction de comparaison de deux objets (min, max, ..., cf. man qsort)
 //
 // Attention ! "heap" est défini comme un pointeur pour optimiser les
-// appels (empilement d'un mot (= 1 pointeur) au lieu de 4 sinon).
+// appels (empilement d'un mot (= 1 pointeur) au lieu de 4 sinon). 
 
 typedef struct{
   void* *array;
-  int size, nmax;
+  int n, nmax;
   int (*f)(const void*, const void*);
 } *heap;
 
