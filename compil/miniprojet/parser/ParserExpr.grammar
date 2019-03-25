@@ -46,7 +46,7 @@ Declarations =
 				;
 
 Declaration	 =
-				 ID.id EQ Expression.e {: return new Aff(e, id); :}
+				 ID.id EQ Expression.e {: return new Assignment(e, id); :}
 				;
 
 Expression 	=

@@ -6,22 +6,9 @@ public class BFct extends AbstTree {
 	protected void peval(EnvironmentInt environment) throws Exception {
 		left.peval(environment);
 		right.peval(environment);
-		double value_left=left.getValue();
-		double value_right=right.getValue();
-		switch(this.bfct){
-			case "min":
-			super.value=Math.min(value_left,value_right);
-			break;
-			case "max":
-			super.value=Math.max(value_left,value_right);
-			break;
-			case "pow" :
-			super.value=(double)Math.pow(value_left,value_right);
-			break;
-			default:
-			break;
-		}
-
+		double left_value=left.getValue();
+		double right_value=right.getValue();
+		apply_operation(left_value,right_value);
 	}
 public BFct(AbstTree left ,AbstTree right,String func) {
 	super(left,right);
@@ -29,7 +16,22 @@ public BFct(AbstTree left ,AbstTree right,String func) {
 	}
 	public String toString(){
 
-		return this.bfct;
+		return this.bfct+"("+super.left+","+super.right+")";
+	}
+	public void apply_operation(double left_value,double right_value){
+		switch(this.bfct){
+			case "min":
+			super.value=Math.min(left_value,right_value);
+			break;
+			case "max":
+			super.value=Math.max(left_value,right_value);
+			break;
+			case "pow" :
+			super.value=(double)Math.pow(left_value,right_value);
+			break;
+			default:
+			break;
+		}
 	}
 
 }

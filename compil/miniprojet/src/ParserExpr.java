@@ -65,7 +65,7 @@ static public class MyEvents extends beaver.Parser.Events {
 					final String id = (String) _symbol_id.value;
 					final Symbol _symbol_e = _symbols[offset + 3];
 					final AbstTree e = (AbstTree) _symbol_e.value;
-					 return new Aff(e, id);
+					 return new Assignment(e, id);
 				}
 			},
 			new Action() {	// [4] Expression = Expression.e1 PLUS Expression.e2

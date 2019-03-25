@@ -1,1 +1,2 @@
-xx=1+2;x=-xx+5 ;min(x,xx)
+// Ceci est un exemple
+xx=2*(5+1)-2*4;re=min(10,xx);re+0

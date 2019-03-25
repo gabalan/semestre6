@@ -1,7 +1,6 @@
 package abstractTree;
 
 public class IntExp extends AbstTree{
-	//	private double val;
 	@Override
 	protected void peval(EnvironmentInt environment) throws Exception {
 

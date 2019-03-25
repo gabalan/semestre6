@@ -1,12 +1,23 @@
 package abstractTree;
 import  java.lang.Math.*;
 public class UFct extends AbstTree{
-	private String func;
+	private String func;//string representant la fonction
 	@Override
 	protected void peval(EnvironmentInt environment) throws Exception {
 		// TODO Auto-generated method stub
 		left.peval(environment);
-		double value=left.getValue();
+		this.apply_operation(left.getValue());
+
+	}
+public UFct(AbstTree left ,String func) {
+		super(left);
+		this.func=func;
+	}
+	public String toString(){
+
+		return this.func+"("+super.left+")";
+	}
+	void apply_operation(double value){
 		switch(this.func){
 			case "sin":
 			super.value=Math.sin(value);
@@ -29,14 +40,7 @@ public class UFct extends AbstTree{
 			default:
 			break;
 		}
-	}
-public UFct(AbstTree left ,String func) {
-		super(left);
-		this.func=func;
-	}
-	public String toString(){
 
-		return this.func+"("+super.left+")";
 	}
 
 }

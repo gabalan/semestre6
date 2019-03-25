@@ -7,7 +7,7 @@ public class Seq extends AbstTree{
 		// TODO Auto-generated method stub
 		left.peval(environment);
 		right.peval(environment);
-		super.value=right.value;
+		super.value=right.getValue();
 	}
 	public Seq(AbstTree left,AbstTree right){
 		super(left,right);
