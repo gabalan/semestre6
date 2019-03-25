@@ -34,8 +34,6 @@ static public class MyEvents extends beaver.Parser.Events {
 %left TIMES, DIV;
 %left PLUS, MINUS;
 
-
-
 %goal Program;
 
 Program =
@@ -52,10 +50,11 @@ Declaration	 =
 				;
 
 Expression 	=
-					Expression.e1 PLUS Expression.e2 {: return new Plus(e1, e2); :}
-				| Expression.e1 MINUS Expression.e2 {: return new Minus(e1, e2); :}
-				| Expression.e1 TIMES Expression.e2  {: return new Times(e1, e2); :}
-				| Expression.e1 DIV Expression.e2		{: return new Div(e1, e2); :}
+					Expression.e1 PLUS Expression.e2 {: return new Operation(e1, e2,"PLUS"); :}
+				| Expression.e1 MINUS Expression.e2 {: return new Operation(e1, e2,"MINUS"); :}
+				| Expression.e1 TIMES Expression.e2  {: return new Operation(e1, e2,"TIMES"); :}
+				| Expression.e1 DIV Expression.e2		{: return new Operation(e1, e2,"DIV"); :}
+				| PLUS Expression.e @ UNARY_PLUS {:return e;:}
 				| MINUS Expression.e @ UNARY_MINUS  {: return new UMinus(e); :}
 				| LPAR Expression.e RPAR					{: return e; :}
 				| UFCT.fct LPAR Expression.e RPAR 		{: return new UFct(e, fct); :}

@@ -23,7 +23,7 @@ import beaver.Scanner;
   }
 %}
 
-Integer = [0-9]+
+Integer = "+"?[0-9]+
 
 %%
 

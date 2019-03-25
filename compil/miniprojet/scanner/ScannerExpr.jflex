@@ -14,33 +14,42 @@ import beaver.Scanner;
 %unicode
 %line
 %column
+%{
+  private Symbol newToken(short id) {
+    return new Symbol(id, yyline , yycolumn, yylength(),null);
+  }
+  private Symbol newToken(short id, Object value) {
+    return new Symbol(id, yyline , yycolumn , yylength(), value);
+  }
+%}
 
 // Compléter à partir d'ici
 
 Identifier = [a-zA-Z_][a-zA-Z0-9_]*
 Integer = [0-9]+
 Decimal = ({Integer}(\.{Integer})?)|(\.{Integer})
-Float = [+-]?{Decimal}([eE][+-]?{Integer})?
+Float = {Decimal}([eE][+-]?{Integer})?
 Unary =	sqrt |sin | round |cos | tan | abs
 Binary =min|max|pow 
 
 %%
 
-"+" 	        	{  return new Symbol(Terminals.PLUS, yyline, yycolumn); }
-"-" 	        	{  return new Symbol(Terminals.MINUS, yyline, yycolumn); }
-"*" 	        	{  return new Symbol(Terminals.TIMES, yyline, yycolumn); }
-"/" 	        	{  return new Symbol(Terminals.DIV, yyline, yycolumn); }
-"(" 	        	{  return new Symbol(Terminals.LPAR, yyline, yycolumn); }
-")" 	        	{  return new Symbol(Terminals.RPAR, yyline, yycolumn); }
-{Unary}					{  return new Symbol(Terminals.UFCT, yyline, yycolumn, yytext()); }
-{Binary}				{  return new Symbol(Terminals.BFCT, yyline, yycolumn, yytext()); }
-e								{  return new Symbol(Terminals.E, yyline, yycolumn, java.lang.Math.E); }
-pi							{  return new Symbol(Terminals.PI, yyline, yycolumn, java.lang.Math.PI); }
-"=" 	        	{  return new Symbol(Terminals.EQ, yyline, yycolumn); }
-"," 	        	{  return new Symbol(Terminals.COMMA, yyline, yycolumn); }
-";" 	        	{  return new Symbol(Terminals.SEMI, yyline, yycolumn); }
-{Integer}				{  return new Symbol(Terminals.INTEGER, yyline, yycolumn, new Integer(yytext())); }
-{Float}					{  return new Symbol(Terminals.FLOAT, yyline, yycolumn, new Double(yytext())); }
-{Identifier}		{  return new Symbol(Terminals.ID, yyline, yycolumn, yytext()); }
+"+" 	        	{  return newToken(Terminals.PLUS); }
+"-" 	        	{  return newToken(Terminals.MINUS); }
+"*" 	        	{  return newToken(Terminals.TIMES); }
+"/" 	        	{  return newToken(Terminals.DIV); }
+"(" 	        	{  return newToken(Terminals.LPAR); }
+")" 	        	{  return newToken(Terminals.RPAR); }
+{Unary}					{  return newToken(Terminals.UFCT, yytext()); }
+{Binary}				{  return newToken(Terminals.BFCT, yytext()); }
+e								{  return newToken(Terminals.E,java.lang.Math.E); }
+pi							{  return newToken(Terminals.PI, java.lang.Math.PI); }
+"=" 	        	{  return newToken(Terminals.EQ); }
+"," 	        	{  return newToken(Terminals.COMMA); }
+";" 	        	{  return newToken(Terminals.SEMI); }
+{Integer}				{  return newToken(Terminals.INTEGER, new Integer(yytext())); }
+{Float}					{  return newToken(Terminals.FLOAT, new Double(yytext())); }
+{Identifier}		{  return newToken(Terminals.ID, yytext()); }
 
-[^]|\n					{ }
+[^]|\n
+	{}

@@ -7,7 +7,7 @@ public class BFct extends AbstTree {
 		left.peval(environment);
 		right.peval(environment);
 		double value_left=left.getValue();
-		double value_right=left.getValue();
+		double value_right=right.getValue();
 		switch(this.bfct){
 			case "min":
 			super.value=Math.min(value_left,value_right);

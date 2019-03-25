@@ -39,7 +39,7 @@
 			<fileset dir="lib" includes="beaver-rt.jar" />
 			<fileset dir="lib" includes="jflex-full-1.7.0.jar" />
 		</path>
-		<java classname="Main" classpath="bin" classpathref="beaverclasspath" output="data/output">
+		<java classname="Main" classpath="bin" classpathref="beaverclasspath" >
 			<arg value="data/input" />
 		</java>
 

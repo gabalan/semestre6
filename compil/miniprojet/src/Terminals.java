@@ -4,18 +4,18 @@
  */
 public class Terminals {
 	static public final short EOF = 0;
-	static public final short MINUS = 1;
-	static public final short LPAR = 2;
-	static public final short ID = 3;
-	static public final short BFCT = 4;
-	static public final short UFCT = 5;
-	static public final short INTEGER = 6;
-	static public final short FLOAT = 7;
-	static public final short PI = 8;
-	static public final short E = 9;
-	static public final short TIMES = 10;
-	static public final short DIV = 11;
-	static public final short PLUS = 12;
+	static public final short PLUS = 1;
+	static public final short MINUS = 2;
+	static public final short LPAR = 3;
+	static public final short ID = 4;
+	static public final short BFCT = 5;
+	static public final short UFCT = 6;
+	static public final short INTEGER = 7;
+	static public final short FLOAT = 8;
+	static public final short PI = 9;
+	static public final short E = 10;
+	static public final short TIMES = 11;
+	static public final short DIV = 12;
 	static public final short SEMI = 13;
 	static public final short RPAR = 14;
 	static public final short EQ = 15;
@@ -23,6 +23,7 @@ public class Terminals {
 
 	static public final String[] NAMES = {
 		"EOF",
+		"PLUS",
 		"MINUS",
 		"LPAR",
 		"ID",
@@ -34,7 +35,6 @@ public class Terminals {
 		"E",
 		"TIMES",
 		"DIV",
-		"PLUS",
 		"SEMI",
 		"RPAR",
 		"EQ",

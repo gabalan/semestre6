@@ -6,11 +6,12 @@ public class UMinus extends AbstTree{
 	protected void peval(EnvironmentInt environment) throws Exception {
 		// TODO Auto-generated method stub
 		left.peval(environment);
-	//	super.value=left.getValue();
+		super.value=-left.getValue();
 	}
 public UMinus(AbstTree left) {
 		super(left);
-		super.value=-left.getValue();
+		
+	System.out.println("je vois un uminis");
 	}
 
 
