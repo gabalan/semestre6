@@ -1,0 +1,26 @@
+/* **************************************************
+ * Gestion de la pile plus sophistiquée
+ * Affichage attendu:
+ * 8
+ * 260
+ * 512
+ ************************************************** */
+
+function succ (i:integer):integer
+begin
+return (i+1);
+end
+
+
+function sum(i : integer, j : integer) : integer
+var k:integer;
+begin
+  k := 100;
+  return (i+j+k-100);
+end
+
+begin
+println(sum(3, 5));
+println(succ(succ(succ(succ(0x100)))));
+println(sum(0x30, sum(0x50, sum (0x70, 0x110))));
+end

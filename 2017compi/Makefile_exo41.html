@@ -1,0 +1,33 @@
+#Makefile
+#cas ou .y inclut le "lex.yy.c"
+#.l n'inclut pas le "y.tab.h"
+CC = gcc 
+CPPFLAGS=
+CFLAGS=-g -Wall -std=c99
+LDFLAGS=-lm 
+FLEX = flex 
+BISON = bison
+BFLAGS=-d --report=all
+
+NOM = exo4.1
+#grammaire expressions
+
+$(NOM):	$(NOM).tab.o
+	$(CC) $(LDFLAGS) $(NOM).tab.o -o $(NOM)
+
+$(NOM).tab.c: $(NOM).y lex.yy.c 
+	$(BISON) $(BFLAGS) $(NOM).y
+
+lex.yy.c: $(NOM).l
+	$(FLEX) $(NOM).l
+
+$(NOM).tab.h: $(NOM).tab.c
+
+$(NOM).tab.o: $(NOM).tab.c $(NOM).tab.h
+	$(CC) -c $(NOM).tab.c
+
+.PHONY: clean nickel
+
+clean:
+	rm -f *.tab.? lex.*.c *.o *~ \#*\#
+
