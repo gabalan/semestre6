@@ -13,12 +13,10 @@ public class Environment implements EnvironmentInt {
 		@Override
 		public void putVariable(String id, Double value) {
 			hashtable.put(id, value);
-		//	System.out.println("Enregistre " + variable + " " + value);
 		}
 
 		@Override
 		public Double getVariableValue(String id) {
-			//System.out.println("Retrouve " + variable + " " + table.get(variable));
 			return hashtable.get(id);
 		}
 

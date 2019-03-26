@@ -1,15 +1,15 @@
 package abstractTree;
 
 public class Operation extends AbstTree{
-	private String operation;//l'operation qu'il faut appliquer au noeud
+	private String operation;//le type d'operation à effectuer (+,-,/,*)
 	@Override
 	protected void peval(EnvironmentInt environment) throws Exception {
 		// TODO Auto-generated method stub
-		//this.val=environment.getVariableValue("resultat");
 		left.peval(environment);
 		right.peval(environment);
 		apply_operation(left.getValue(),right.getValue());
 	}
+//Constructeur
 public Operation(AbstTree left ,AbstTree right,String operation) {
 	super(left,right);
 	this.operation =operation;
@@ -17,6 +17,7 @@ public Operation(AbstTree left ,AbstTree right,String operation) {
 	public String toString(){
 		return this.operation+"("+left +","+right+")";
 	}
+		//effectue le calcul associé à cette classe
 	public void apply_operation(double left_value,double right_value){
 		switch(this.operation){
 		case "PLUS":
@@ -32,6 +33,6 @@ public Operation(AbstTree left ,AbstTree right,String operation) {
 			super.value= left_value * right_value;
 			break;
 		}
-		System.out.println("operation "+left_value +" "+this.operation+" "+right_value+" resultat "+super.value);
+
 	}
 }

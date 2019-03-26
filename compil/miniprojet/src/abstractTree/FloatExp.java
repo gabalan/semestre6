@@ -12,7 +12,6 @@ public class FloatExp extends AbstTree{
 	}
 
 	public String toString(){
-
 		return ""+super.value;
 	}
 }

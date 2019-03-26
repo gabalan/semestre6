@@ -1,7 +1,7 @@
 package abstractTree;
 import  java.lang.Math.*;
 public class UFct extends AbstTree{
-	private String func;//string representant la fonction
+	private String func;//string representant la fonction(sin,cos,max,min,---)
 	@Override
 	protected void peval(EnvironmentInt environment) throws Exception {
 		// TODO Auto-generated method stub
@@ -9,15 +9,14 @@ public class UFct extends AbstTree{
 		this.apply_operation(left.getValue());
 
 	}
-public UFct(AbstTree left ,String func) {
+	public UFct(AbstTree left ,String func) {
 		super(left);
 		this.func=func;
 	}
 	public String toString(){
-
 		return this.func+"("+super.left+")";
 	}
-	void apply_operation(double value){
+	public void apply_operation(double value){
 		switch(this.func){
 			case "sin":
 			super.value=Math.sin(value);

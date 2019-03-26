@@ -1,2 +1,2 @@
 // Ceci est un exemple
-xx=2*(5+1)-2*4;re=min(10,xx);re+0
+resu=min(abs(-0.3),5);res2=max(pow(sqrt(2),sqrt(2)),resu)+3;res2

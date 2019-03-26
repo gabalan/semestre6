@@ -10,14 +10,14 @@ public class BFct extends AbstTree {
 		double right_value=right.getValue();
 		apply_operation(left_value,right_value);
 	}
-public BFct(AbstTree left ,AbstTree right,String func) {
-	super(left,right);
+	public BFct(AbstTree left ,AbstTree right,String func) {
+		super(left,right);
 		this.bfct=func;
 	}
 	public String toString(){
-
 		return this.bfct+"("+super.left+","+super.right+")";
 	}
+		//effectue le calcul associé à cette classe
 	public void apply_operation(double left_value,double right_value){
 		switch(this.bfct){
 			case "min":

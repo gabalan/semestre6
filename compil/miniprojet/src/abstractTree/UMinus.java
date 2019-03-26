@@ -11,7 +11,7 @@ public class UMinus extends AbstTree{
 	public UMinus(AbstTree left) {
 		super(left);
 	}
-	void apply_operation(double value){
+	public void apply_operation(double value){
 		super.value=value;
 
 	}

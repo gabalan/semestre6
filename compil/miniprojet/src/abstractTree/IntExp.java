@@ -7,7 +7,7 @@ public class IntExp extends AbstTree{
 	}
 	public IntExp(int i) {
 		super();
-		super.value=	(double )i;
+		super.value=	(double )i;//caster d'abord la variable i en double(car super.value est de type double)
 	}
 	public String toString(){
 
