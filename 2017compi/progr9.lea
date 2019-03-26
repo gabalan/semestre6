@@ -1,0 +1,41 @@
+/* **************************************************
+ *
+ * Ce fichier teste l'interpréteur
+ * usage:
+ * ./interpreter progr9.lea
+ *
+ ************************************************** */
+//
+// tableaux et enumérés
+// 
+// Affichage Attendu
+// true
+// false
+// true
+// false
+
+type
+days = (SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY);
+months = (JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER);
+range1 = FEBRUARY..MAY;
+dates = 1..31;
+
+var
+	a : MONDAY .. FRIDAY;
+	b : integer;
+	c : days;
+	d : (A, B, C);
+	week :  array [SUNDAY .. SATURDAY] of boolean;
+	days_of_month :  array [MONDAY .. FRIDAY] of array [dates] of boolean;
+
+
+begin
+a := MONDAY;
+a := SATURDAY; // pas de vérification
+week[MONDAY] := true;
+println (week[MONDAY]);
+days_of_month[MONDAY][24] := true;
+println (days_of_month[MONDAY][23]);
+println (days_of_month[MONDAY][24]);
+println (days_of_month[MONDAY][25]);
+end

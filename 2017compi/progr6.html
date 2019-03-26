@@ -1,0 +1,212 @@
+#STATIC	1
+// ############ Goto Main Code ############
+0	goto 140
+// ############ Function Code ############
+1	skip
+// VARIABLE k
+2	R1 := STACK[5]
+3	R2 := 0x00000001
+4	R3 :=  R1 = R2
+5	if R3 goto 7
+6	goto 10
+7	R4 := 0x00000001
+8	return R4
+9	goto 19
+// VARIABLE k
+10	R5 := STACK[5]
+11	push 0x00000002
+// VARIABLE k
+12	R6 := STACK[5]
+13	R7 := 0x00000001
+14	R8 :=  R6 - R7
+15	param R8
+16	R9 :=  call 1
+17	R10 :=  R5 * R9
+18	return R10
+19	skip
+// ############ Function Code ############
+20	skip
+// VARIABLE k
+21	R11 := STACK[5]
+22	R12 := 0x00000001
+23	R13 :=  R11 = R12
+24	if R13 goto 26
+25	goto 29
+26	R14 := 0x00000001
+27	return R14
+28	goto 38
+29	push 0x00000002
+// VARIABLE k
+30	R15 := STACK[5]
+31	R16 := 0x00000001
+32	R17 :=  R15 - R16
+33	param R17
+34	R18 :=  call 20
+// VARIABLE k
+35	R19 := STACK[5]
+36	R20 :=  R18 * R19
+37	return R20
+38	skip
+// ############ Function Code ############
+39	skip
+// VARIABLE k
+40	R21 := STACK[8]
+41	R22 := 0x00000001
+42	R23 :=  R21 > R22
+43	if R23 goto 45
+44	goto 58
+45	push 0x00000004
+// VARIABLE a
+46	R24 := STACK[5]
+47	param R24
+// VARIABLE c
+48	R25 := STACK[7]
+49	param R25
+// VARIABLE b
+50	R26 := STACK[6]
+51	param R26
+// VARIABLE k
+52	R27 := STACK[8]
+53	R28 := 0x00000001
+54	R29 :=  R27 - R28
+55	param R29
+56	R30 :=  call 39
+57	goto 58
+58	skip
+// VARIABLE a
+59	R31 := STACK[5]
+60	print R31 2
+61	R32 := 0x0000003E
+62	print R32 2
+// VARIABLE c
+63	R33 := STACK[7]
+64	print R33 2
+65	R34 := 0x0000000A
+66	print R34 2
+// VARIABLE k
+67	R35 := STACK[8]
+68	R36 := 0x00000001
+69	R37 :=  R35 > R36
+70	if R37 goto 72
+71	goto 85
+72	push 0x00000004
+// VARIABLE b
+73	R38 := STACK[6]
+74	param R38
+// VARIABLE a
+75	R39 := STACK[5]
+76	param R39
+// VARIABLE c
+77	R40 := STACK[7]
+78	param R40
+// VARIABLE k
+79	R41 := STACK[8]
+80	R42 := 0x00000001
+81	R43 :=  R41 - R42
+82	param R43
+83	R44 :=  call 39
+84	goto 85
+85	skip
+// ############ Function Code ############
+86	skip
+// VARIABLE i
+87	R45 := STACK[5]
+88	R46 := 0x00000001
+89	R47 :=  R45 = R46
+90	if R47 goto 92
+91	goto 95
+92	R48 := 0x00000000
+93	STACK[6] := R48
+94	goto 111
+// VARIABLE i
+95	R49 := STACK[5]
+96	R50 := 0x00000000
+97	R51 :=  R49 = R50
+98	if R51 goto 100
+99	goto 103
+100	R52 := 0x00000001
+101	STACK[6] := R52
+102	goto 110
+103	push 0x00000002
+// VARIABLE i
+104	R53 := STACK[5]
+105	R54 := 0x00000001
+106	R55 :=  R53 - R54
+107	param R55
+108	R56 :=  call 114
+109	STACK[6] := R56
+110	skip
+111	skip
+// VARIABLE b
+112	R57 := STACK[6]
+113	return R57
+// ############ Function Code ############
+114	skip
+// VARIABLE i
+115	R58 := STACK[5]
+116	R59 := 0x00000001
+117	R60 :=  R58 = R59
+118	if R60 goto 120
+119	goto 123
+120	R61 := 0x00000001
+121	return R61
+122	goto 139
+// VARIABLE i
+123	R62 := STACK[5]
+124	R63 := 0x00000000
+125	R64 :=  R62 = R63
+126	if R64 goto 128
+127	goto 131
+128	R65 := 0x00000000
+129	return R65
+130	goto 138
+131	push 0x00000003
+// VARIABLE i
+132	R66 := STACK[5]
+133	R67 := 0x00000001
+134	R68 :=  R66 - R67
+135	param R68
+136	R69 :=  call 86
+137	return R69
+138	skip
+139	skip
+// ############ Begin Main Code ############
+140	push 0x00000002
+141	R70 := 0x00000006
+142	param R70
+143	R71 :=  call 1
+144	print R71 4
+145	R72 := 0x0000000A
+146	print R72 2
+147	push 0x00000002
+148	R73 := 0x00000006
+149	param R73
+150	R74 :=  call 20
+151	print R74 4
+152	R75 := 0x0000000A
+153	print R75 2
+154	push 0x00000004
+155	R76 := 0x00000041
+156	param R76
+157	R77 := 0x00000042
+158	param R77
+159	R78 := 0x00000043
+160	param R78
+161	R79 := 0x00000004
+162	param R79
+163	R80 :=  call 39
+164	push 0x00000003
+165	R81 := 0x000003E9
+166	param R81
+167	R82 :=  call 86
+168	print R82 3
+169	R83 := 0x0000000A
+170	print R83 2
+171	push 0x00000003
+172	R84 := 0x000003E8
+173	param R84
+174	R85 :=  call 86
+175	print R85 3
+176	R86 := 0x0000000A
+177	print R86 2
+178	stop

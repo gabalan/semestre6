@@ -1,0 +1,14 @@
+
+Les soutenances se dérouleront en salle machine.
+Chaque soutenance dure environ 15 minutes et se déroule comme suit:
+
+- les étudiants exposent , soit sur un tableau, soit en utilisant un
+video-projecteur, leur solution du projet (durée 10 minutes)
+
+- les membres du jury (deux à trois enseignants de l'UE de compilation) posent
+des questions auxquelles les étudiants donnent des réponses ( réponse
+orale, ou bien écrite sur le tableau, référence au rapport de stage,
+démonstration supplémentaire sur machine , etc ... (durée 5 minutes)
+
+La note de projet tiendra compte de tous ces aspects de la soutenance
+ainsi que de la qualité du programme et du rapport écrit.

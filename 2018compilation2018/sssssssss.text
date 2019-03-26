@@ -1,0 +1,2311 @@
+/////////////////////////////////////////////////////   1.c3a
+#STATIC	55
+// ############ Goto Main Code ############
+0	goto 19
+// ############ Function Code ############
+1	skip
+2	R1 := malloc 1
+3	STACK[7] := R1
+4	push 0x00000003
+// VARIABLE i
+5	R2 := STACK[5]
+6	param R2
+// VARIABLE j
+7	R3 := STACK[6]
+8	param R3
+9	R4 :=  call 14
+// VARIABLE result
+10	R5 := STACK[7]
+11	HEAP[R5] := R4
+// VARIABLE result
+12	R6 := STACK[7]
+13	return R6
+// ############ Function Code ############
+14	skip
+// VARIABLE i
+15	R7 := STACK[5]
+// VARIABLE j
+16	R8 := STACK[6]
+17	R9 :=  R7 + R8
+18	return R9
+// ############ Begin Main Code ############
+19	R10 := 0x00000000
+20	STATIC[3] := R10
+21	push 0x00000004
+22	R11 := 0x00000003
+23	param R11
+24	R12 := 0x00000007
+25	param R12
+26	R13 :=  call 1
+27	R14 := HEAP[R13]
+28	STATIC[3] := R14
+29	push 0x00000003
+30	R15 := 0x00000003
+31	param R15
+32	R16 := 0x00000007
+33	param R16
+34	R17 :=  call 14
+35	STATIC[3] := R17
+36	R18 := 0x00000024
+// VARIABLE z2
+37	R19 := 0x00000004
+38	R20 := 0x00000001
+39	R21 := 0x00000001
+40	R22 := 0x00000001
+41	R23 :=  R21 - R22
+// offset: (index - min) * size
+42	R24 :=  R23 * R20
+// array base:R25
+43	R25 :=  R19 + R24
+44	R26 := R25
+45	STATIC[R26] := R18
+// VARIABLE z2
+46	R27 := 0x00000004
+47	R28 := 0x00000001
+48	R29 := 0x00000001
+49	R30 := 0x00000001
+50	R31 :=  R29 - R30
+// offset: (index - min) * size
+51	R32 :=  R31 * R28
+// array base:R33
+52	R33 :=  R27 + R32
+// array access
+53	R34 := STATIC[R33]
+54	STATIC[0] := R34
+55	push 0x00000003
+// VARIABLE z2
+56	R35 := 0x00000004
+57	R36 := 0x00000001
+58	R37 := 0x00000001
+59	R38 := 0x00000001
+60	R39 :=  R37 - R38
+// offset: (index - min) * size
+61	R40 :=  R39 * R36
+// array base:R41
+62	R41 :=  R35 + R40
+// array access
+63	R42 := STATIC[R41]
+64	param R42
+65	R43 := 0x00000001
+66	param R43
+67	R44 :=  call 14
+68	STATIC[3] := R44
+// VARIABLE l
+69	R45 := 0x00000029
+70	R46 := 0x00000001
+71	R47 := 0x00000001
+72	R48 := 0x00000001
+73	R49 :=  R47 - R48
+// offset: (index - min) * size
+74	R50 :=  R49 * R46
+// array base:R51
+75	R51 :=  R45 + R50
+// array access
+76	R52 := STATIC[R51]
+77	if R52 goto 79
+78	goto 82
+79	R53 := 0x00000001
+80	STATIC[0] := R53
+81	goto 82
+82	skip
+83	R54 := 0x00000024
+84	R55 := 0x0000002D
+85	R56 := 0x00000007
+86	R57 :=  R55 / R56
+87	R58 :=  R54 + R57
+88	R59 := - R58
+89	STATIC[0] := R59
+90	R60 := 0x00000000
+91	STATIC[50] := R60
+92	R61 := malloc 1
+93	STATIC[50] := R61
+94	R62 := 0x00000024
+// VARIABLE p
+95	R63 := STATIC[50]
+96	HEAP[R63] := R62
+// VARIABLE p
+97	R64 := STATIC[50]
+98	R65 := HEAP[R64]
+99	STATIC[0] := R65
+// VARIABLE p
+100	R66 := STATIC[50]
+101	free R66
+102	R67 := 0xFFFFFFFF
+103	STATIC[50] := R67
+104	stop
+///////////////////////////////////////////////////////////// 1.lea
+
+
+
+/* **************************************************
+ *
+ * Ce fichier teste l'analyseur syntaxique et sÃ©mantique
+ * usage:
+ * a) dÃ©commenter une des lignes ou plusieurs
+ * b) ./parser progr1.lea
+ *
+ ************************************************** */
+
+type
+
+caractere = character;
+entier = integer;
+booleen = boolean;
+car = caractere;
+//car = caractere; // error "Type car yet declared"
+//carac = caracter; // error "Unknown type"
+
+Months = (January, February, March, April, May, June, July, August, September, October, November, December);
+DaysOfWeek = (Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday);
+
+range1 = 64 .. 81;
+range2 = Monday .. Friday;
+range3 = Monday .. Thursday;
+//range4 = Friday .. Tuesday; // error "range not valid"
+//range5 = Monday .. April; // error "incoherent range"
+
+table1 = array [ 1 .. 32 ] of array [ range3 ] of integer;
+//table2 = array [ 1 .. 32 ] of array [ DaysOfWeek ] of integer; // error "Range type expected"
+//table3 = array [ 1 .. 32 ] of array [ Wednesday..Saturday ] of integer;
+
+ptr = ^integer;
+
+var
+
+x, y, z : integer;
+//x : boolean; // error "Variable x yet declared"
+b : boolean;
+z2 : array [ 1 .. 32] of integer;
+k : array [ range2 ] of integer;
+l : array [ range2 ] of boolean;
+m2 : array [ Monday .. Thursday ] of boolean;
+p : ptr;
+m : Months;
+r1: range1;
+r2: range2;
+x2 : boolean;
+
+
+function goo(i : integer, j : integer) : boolean;
+//function goo(i : integer, j : integer) : boolean; //error "procedure or function declared twice"
+
+function foo(i : integer, j : integer) : ^boolean
+var
+	result : ^boolean;
+begin
+	new(result);
+	//result^ := hoo(i, j); // error "function not declared"
+	result^ := goo(i, j);
+	return (result);
+end
+
+function goo(i : integer, j : integer) : boolean
+begin
+	return (i+j);
+end
+
+//function goo(i : integer, j : integer) : boolean { return false; } // error "function already defined"
+
+begin
+	b := false;
+	//b := 2; // error "Type error in affectation"
+	//l := m2; // error "Type error in affectation"
+	
+	b := foo(3, 7)^;
+	b := goo(3, 7);
+	//b := foo(3); // error "Type error in calling expression"
+	//b := foo(3, false); // error "Type error in calling expression"
+	//x := foo(3, 7); // error "Type error in calling expression"
+	
+	//z2 [ Thursday ] := 36; // error "Type error in array access "
+	z2 [ 1 ] := 36;
+	x := z2 [ 1 ];
+	b := goo(z2 [ 1 ], 1);
+	//y := z [ false ]; // error "Type error in array access"
+	//y := z [ 4 ]; // error "Type error in affectation"
+	//b := z [ 4 ]; // error "Type error in affectation"
+	//z := k [ 4 ]; // error "Type error in affectation"
+	//b := z2 [ Thursday ]; // error "Type error in affectation"
+	// z2 := 36; // Accessible variable expected
+	
+
+	if (l [ Monday ]) then x := 1;
+	//if (z2 [ 7 ]) then x := 1;
+
+	x := -(36 + 45 / 7);
+	//b := !(2 < false) && (x = 1) && (p = null); // // error "Type error in comparison"
+	//b := !(2 < x) && (x = 1) && p ; // // error "Type error in logical expression"
+	//b := !(2 < x) && (x = 1 + false) && p ; // // error "Type error in arithmetic expression"
+
+	p := null;
+	//p := 0; // error "Type error in affectation"
+	new (p);
+	//new (x); // error "Type error in pointer access expression"
+	p^ := 36;
+	//p^ := false;
+	//x^ := null; // error "Type error in pointer access expression"
+	x := p^;
+	dispose (p);
+	//dispose (x);  // error "Type error in pointer access expression"
+	
+
+end
+
+/////////////////////////////////2.c
+
+#STATIC	14
+// ############ Goto Main Code ############
+0	goto 1
+// ############ Begin Main Code ############
+1	R1 := 0x4995F6B5
+2	STATIC[0] := R1
+3	R2 := 0xFFFFFFFF
+4	STATIC[1] := R2
+5	R3 := 0x00000001
+6	STATIC[2] := R3
+7	R4 := 0x00000061
+8	STATIC[3] := R4
+9	R5 := 0x00000041
+// VARIABLE d
+10	R6 := 0x00000004
+11	R7 := 0x00000001
+12	R8 := 0x00000001
+13	R9 := 0x00000001
+14	R10 :=  R8 - R9
+// offset: (index - min) * size
+15	R11 :=  R10 * R7
+// array base:R12
+16	R12 :=  R6 + R11
+17	R13 := R12
+18	STATIC[R13] := R5
+19	R14 := 0x00000042
+// VARIABLE d
+20	R15 := 0x00000004
+21	R16 := 0x00000001
+22	R17 := 0x00000002
+23	R18 := 0x00000001
+24	R19 :=  R17 - R18
+// offset: (index - min) * size
+25	R20 :=  R19 * R16
+// array base:R21
+26	R21 :=  R15 + R20
+27	R22 := R21
+28	STATIC[R22] := R14
+29	R23 := 0x00000043
+// VARIABLE d
+30	R24 := 0x00000004
+31	R25 := 0x00000001
+32	R26 := 0x00000003
+33	R27 := 0x00000001
+34	R28 :=  R26 - R27
+// offset: (index - min) * size
+35	R29 :=  R28 * R25
+// array base:R30
+36	R30 :=  R24 + R29
+37	R31 := R30
+38	STATIC[R31] := R23
+39	R32 := 0x0000005A
+// VARIABLE d
+40	R33 := 0x00000004
+41	R34 := 0x00000001
+42	R35 := 0x0000000A
+43	R36 := 0x00000001
+44	R37 :=  R35 - R36
+// offset: (index - min) * size
+45	R38 :=  R37 * R34
+// array base:R39
+46	R39 :=  R33 + R38
+47	R40 := R39
+48	STATIC[R40] := R32
+// VARIABLE x
+49	R41 := STATIC[0]
+50	print R41 4
+51	R42 := 0x0000000A
+52	print R42 2
+// VARIABLE y
+53	R43 := STATIC[1]
+54	print R43 4
+55	R44 := 0x0000000A
+56	print R44 2
+// VARIABLE b
+57	R45 := STATIC[2]
+58	print R45 3
+59	R46 := 0x0000000A
+60	print R46 2
+// VARIABLE c
+61	R47 := STATIC[3]
+62	print R47 2
+63	R48 := 0x0000000A
+64	print R48 2
+// VARIABLE d
+65	R49 := 0x00000004
+66	R50 := 0x00000001
+67	R51 := 0x00000002
+68	R52 := 0x00000001
+69	R53 :=  R51 - R52
+// offset: (index - min) * size
+70	R54 :=  R53 * R50
+// array base:R55
+71	R55 :=  R49 + R54
+// array access
+72	R56 := STATIC[R55]
+73	print R56 2
+74	R57 := 0x0000000A
+75	print R57 2
+76	stop
+///////////////////////////////////////2.l
+/* **************************************************
+ *
+ * Ce fichier teste l'interprÃ©teur
+ * usage:
+ * a) dÃ©commenter au besoin une des lignes ou plusieurs
+ * b) ./interpreter progr2.lea
+ *
+ ************************************************** */
+//
+// gestion des variables statiques
+//
+// Affichage prÃ©vu:
+// 1234564789
+// -1
+// true
+// a
+// B
+
+var
+x, y : integer;
+b : boolean;
+c : character;
+d : array [1 .. 10] of character;
+begin
+   x := 1234564789; // 0x4995F6B5
+   y := 0xFFFFFFFF;
+   b := true;
+   c := 'a';
+   d[1] := 'A';
+   d[2] := 'B';
+   d[3] := 'C';
+   d[10] := 'Z';
+   println (x);
+   println (y);
+   println (b);
+   println (c);
+   println (d[2]);
+end
+///////////////////////////////3.a
+#STATIC	17
+// ############ Goto Main Code ############
+0	goto 1
+// ############ Begin Main Code ############
+1	R1 := 0x4995F6B5
+2	STATIC[0] := R1
+3	R2 := 0xFFFFFFFF
+4	STATIC[1] := R2
+5	R3 := 0x00000001
+6	STATIC[2] := R3
+7	R4 := 0x00000061
+8	STATIC[3] := R4
+9	R5 := 0x00000041
+// VARIABLE d
+10	R6 := 0x00000004
+11	R7 := 0x00000001
+12	R8 := 0x00000001
+13	R9 := 0x00000001
+14	R10 :=  R8 - R9
+// offset: (index - min) * size
+15	R11 :=  R10 * R7
+// array base:R12
+16	R12 :=  R6 + R11
+17	R13 := R12
+18	STATIC[R13] := R5
+19	R14 := 0x00000042
+// VARIABLE d
+20	R15 := 0x00000004
+21	R16 := 0x00000001
+22	R17 := 0x00000002
+23	R18 := 0x00000001
+24	R19 :=  R17 - R18
+// offset: (index - min) * size
+25	R20 :=  R19 * R16
+// array base:R21
+26	R21 :=  R15 + R20
+27	R22 := R21
+28	STATIC[R22] := R14
+29	R23 := 0x00000043
+// VARIABLE d
+30	R24 := 0x00000004
+31	R25 := 0x00000001
+32	R26 := 0x00000003
+33	R27 := 0x00000001
+34	R28 :=  R26 - R27
+// offset: (index - min) * size
+35	R29 :=  R28 * R25
+// array base:R30
+36	R30 :=  R24 + R29
+37	R31 := R30
+38	STATIC[R31] := R23
+39	R32 := 0x0000005A
+// VARIABLE d
+40	R33 := 0x00000004
+41	R34 := 0x00000001
+42	R35 := 0x0000000A
+43	R36 := 0x00000001
+44	R37 :=  R35 - R36
+// offset: (index - min) * size
+45	R38 :=  R37 * R34
+// array base:R39
+46	R39 :=  R33 + R38
+47	R40 := R39
+48	STATIC[R40] := R32
+// VARIABLE x
+49	R41 := STATIC[0]
+50	print R41 4
+51	R42 := 0x0000000A
+52	print R42 2
+// VARIABLE y
+53	R43 := STATIC[1]
+54	print R43 4
+55	R44 := 0x0000000A
+56	print R44 2
+// VARIABLE b
+57	R45 := STATIC[2]
+58	print R45 3
+59	R46 := 0x0000000A
+60	print R46 2
+// VARIABLE c
+61	R47 := STATIC[3]
+62	print R47 2
+63	R48 := 0x0000000A
+64	print R48 2
+// VARIABLE d
+65	R49 := 0x00000004
+66	R50 := 0x00000001
+67	R51 := 0x00000002
+68	R52 := 0x00000001
+69	R53 :=  R51 - R52
+// offset: (index - min) * size
+70	R54 :=  R53 * R50
+// array base:R55
+71	R55 :=  R49 + R54
+// array access
+72	R56 := STATIC[R55]
+73	print R56 2
+74	R57 := 0x0000000A
+75	print R57 2
+76	R58 := malloc 1
+77	STATIC[15] := R58
+78	R59 := 0x00000041
+// VARIABLE q
+79	R60 := STATIC[15]
+80	HEAP[R60] := R59
+// VARIABLE q
+81	R61 := STATIC[15]
+82	R62 := HEAP[R61]
+83	print R62 2
+84	R63 := 0x0000000A
+85	print R63 2
+// VARIABLE p
+86	R64 := STATIC[14]
+87	print R64 5
+88	R65 := 0x0000000A
+89	print R65 2
+90	R66 := malloc 1
+91	STATIC[14] := R66
+// VARIABLE p
+92	R67 := STATIC[14]
+93	print R67 5
+94	R68 := 0x0000000A
+95	print R68 2
+// VARIABLE x
+96	R69 := STATIC[0]
+// VARIABLE p
+97	R70 := STATIC[14]
+98	HEAP[R70] := R69
+// VARIABLE p
+99	R71 := STATIC[14]
+100	R72 := HEAP[R71]
+101	print R72 4
+102	R73 := 0x0000000A
+103	print R73 2
+104	R74 := malloc 1
+105	STATIC[16] := R74
+106	R75 := 0x00010000
+// VARIABLE r
+107	R76 := STATIC[16]
+108	HEAP[R76] := R75
+// VARIABLE r
+109	R77 := STATIC[16]
+110	R78 := HEAP[R77]
+111	print R78 4
+112	R79 := 0x0000000A
+113	print R79 2
+// VARIABLE p
+114	R80 := STATIC[14]
+115	free R80
+116	R81 := 0xFFFFFFFF
+117	STATIC[14] := R81
+// VARIABLE p
+118	R82 := STATIC[14]
+119	print R82 5
+120	R83 := 0x0000000A
+121	print R83 2
+122	stop
+///////////////////////////////////////3.l
+/* **************************************************
+ *
+ * Ce fichier teste l'interprÃ©teur
+ * usage:
+ * a) dÃ©commenter au besoin une des lignes ou plusieurs
+ * b) ./interpreter progr3.lea
+ *
+ ************************************************** */
+//
+// gestion des variables statiques
+// gestion du tas et des pointeurs
+// 
+// Affichage prÃ©vu:
+// 1234564789
+// -1
+// true
+// a
+// B
+// A
+// null
+// &10 (ou autre pointeur non nul)
+// 1234564789
+// 65536
+// null
+
+var
+x : integer;
+y : integer;
+b : boolean;
+c : character;
+d : array [1 .. 10] of character;
+p : ^integer;
+q : ^character;
+r :^integer;
+begin
+   x := 1234564789; // 0x4995F6B5
+   y := 0xFFFFFFFF;
+   b := true;
+   c := 'a';
+   d[1] := 'A';
+   d[2] := 'B';
+   d[3] := 'C';
+   d[10] := 'Z';
+   println (x);
+   println (y);
+   println (b);
+   println (c);
+   println (d[2]);
+
+   new(q);
+   q^ := 'A'; // 0x41
+   println (q^);
+   
+   println (p);
+   new(p);
+   println (p);
+   p^ := x;
+   println (p^);
+   
+   new (r); // resize the heap
+   r^ := 65536;
+   println(r^);
+   
+   dispose(p);
+   println (p);
+   //println (p^); // heap memory error
+   
+end
+//////////////////////////////////////////4.c
+#STATIC	2
+// ############ Goto Main Code ############
+0	goto 1
+// ############ Begin Main Code ############
+1	R1 := 0x00000001
+2	STATIC[0] := R1
+// VARIABLE x
+3	R2 := STATIC[0]
+4	R3 := 0x0000000A
+5	R4 :=  R2 <= R3
+6	if R4 goto 8
+7	goto 48
+// VARIABLE x
+8	R5 := STATIC[0]
+9	print R5 4
+10	R6 := 0x0000000A
+11	print R6 2
+// VARIABLE x
+12	R7 := STATIC[0]
+13	R8 := 0x0000000A
+14	R9 :=  R7 = R8
+15	if R9 goto 17
+16	goto 38
+17	R10 := 0x00000001
+18	STATIC[1] := R10
+// VARIABLE y
+19	R11 := STATIC[1]
+20	R12 := 0x00000005
+21	R13 :=  R11 <= R12
+22	if R13 goto 24
+23	goto 36
+24	R14 := 0x000003E8
+25	R15 := - R14
+// VARIABLE y
+26	R16 := STATIC[1]
+27	R17 :=  R15 - R16
+28	print R17 4
+29	R18 := 0x0000000A
+30	print R18 2
+// VARIABLE y
+31	R19 := STATIC[1]
+32	R20 := 0x00000001
+33	R21 :=  R19 + R20
+34	STATIC[1] := R21
+35	goto 19
+36	skip
+37	goto 42
+38	R22 := 0x00000058
+39	print R22 2
+40	R23 := 0x0000000A
+41	print R23 2
+42	skip
+// VARIABLE x
+43	R24 := STATIC[0]
+44	R25 := 0x00000001
+45	R26 :=  R24 + R25
+46	STATIC[0] := R26
+47	goto 3
+48	skip
+49	stop
+/////////////////////////////////////////4.l
+
+/* **************************************************
+ *
+ * Ce fichier teste l'interprÃ©teur
+ * usage:
+ * ./interpreter progr4.lea
+ *
+ ************************************************** */
+//
+// Structure de contrÃ´le
+//
+//
+// Affichage prÃ©vu:
+// 1
+// X
+// 2
+// X
+// 3
+// X
+// 4
+// X
+// 5
+// X
+// 6
+// X
+// 7
+// X
+// 8
+// X
+// 9
+// X
+// 10
+// -1001
+// -1002
+// -1003
+// -1004
+// -1005
+
+var
+   x, y : integer;
+   
+begin
+   x := 1;
+   while (x <= 10) do begin
+      println (x);
+      if (x=10) then begin
+	 y := 1;
+	 while (y <= 5) do begin
+	    println (-1000-y);
+	    y := y + 1;
+	    end
+         end
+      else
+	 println ('X');
+      x := x + 1;
+   end
+   
+end
+///////////////////////////////////////////5.c
+#STATIC	1
+// ############ Goto Main Code ############
+0	goto 31
+// ############ Function Code ############
+1	skip
+// VARIABLE i
+2	R1 := STACK[5]
+// VARIABLE j
+3	R2 := STACK[6]
+4	R3 :=  R1 + R2
+5	return R3
+// ############ Function Code ############
+6	skip
+// VARIABLE i
+7	R4 := STACK[5]
+// VARIABLE j
+8	R5 := STACK[6]
+9	R6 :=  R4 != R5
+10	if R6 goto 12
+11	goto 28
+// VARIABLE i
+12	R7 := STACK[5]
+// VARIABLE j
+13	R8 := STACK[6]
+14	R9 :=  R7 > R8
+15	if R9 goto 17
+16	goto 22
+// VARIABLE i
+17	R10 := STACK[5]
+// VARIABLE j
+18	R11 := STACK[6]
+19	R12 :=  R10 - R11
+20	STACK[5] := R12
+21	goto 26
+// VARIABLE j
+22	R13 := STACK[6]
+// VARIABLE i
+23	R14 := STACK[5]
+24	R15 :=  R13 - R14
+25	STACK[6] := R15
+26	skip
+27	goto 7
+28	skip
+// VARIABLE i
+29	R16 := STACK[5]
+30	return R16
+// ############ Begin Main Code ############
+31	R17 := 0x00000005
+32	STATIC[0] := R17
+33	push 0x00000004
+34	R18 := 0x00000003
+35	param R18
+// VARIABLE x
+36	R19 := STATIC[0]
+37	param R19
+38	R20 :=  call 1
+39	print R20 4
+40	R21 := 0x0000000A
+41	print R21 2
+42	push 0x00000003
+43	R22 := 0x0000004E
+44	param R22
+45	R23 := 0x0000005A
+46	param R23
+47	R24 :=  call 6
+48	print R24 4
+49	R25 := 0x0000000A
+50	print R25 2
+51	stop
+///////////////////////////////////////////5.l
+/* **************************************************
+ *
+ * Ce fichier teste l'interprÃ©teur
+ * usage:
+ * ./interpreter progr5.lea
+ * RÃ©sultat attendu:
+ * 8
+ * 6
+ ************************************************** */
+//
+// gestion de la pile
+// 
+// RÃ©sultat attendu
+// 8
+// 6
+//
+var
+x : integer;
+
+function sum(i : integer, j : integer) : integer
+var k:integer;
+begin
+  return (i+j);
+end
+
+function pgcd(i : integer, j : integer) : integer
+begin
+	while (i != j) do
+		if (i > j) then
+			i := i - j;
+		else
+			j := j - i;
+  return (i);
+end
+
+begin
+x := 5;
+println(sum(3, x));
+println(pgcd(78, 90));
+end
+
+////////////////////////////////////////////////////////6.c
+#STATIC	1
+// ############ Goto Main Code ############
+0	goto 140
+// ############ Function Code ############
+1	skip
+// VARIABLE k
+2	R1 := STACK[5]
+3	R2 := 0x00000001
+4	R3 :=  R1 = R2
+5	if R3 goto 7
+6	goto 10
+7	R4 := 0x00000001
+8	return R4
+9	goto 19
+// VARIABLE k
+10	R5 := STACK[5]
+11	push 0x00000002
+// VARIABLE k
+12	R6 := STACK[5]
+13	R7 := 0x00000001
+14	R8 :=  R6 - R7
+15	param R8
+16	R9 :=  call 1
+17	R10 :=  R5 * R9
+18	return R10
+19	skip
+// ############ Function Code ############
+20	skip
+// VARIABLE k
+21	R11 := STACK[5]
+22	R12 := 0x00000001
+23	R13 :=  R11 = R12
+24	if R13 goto 26
+25	goto 29
+26	R14 := 0x00000001
+27	return R14
+28	goto 38
+29	push 0x00000002
+// VARIABLE k
+30	R15 := STACK[5]
+31	R16 := 0x00000001
+32	R17 :=  R15 - R16
+33	param R17
+34	R18 :=  call 20
+// VARIABLE k
+35	R19 := STACK[5]
+36	R20 :=  R18 * R19
+37	return R20
+38	skip
+// ############ Function Code ############
+39	skip
+// VARIABLE k
+40	R21 := STACK[8]
+41	R22 := 0x00000001
+42	R23 :=  R21 > R22
+43	if R23 goto 45
+44	goto 58
+45	push 0x00000004
+// VARIABLE a
+46	R24 := STACK[5]
+47	param R24
+// VARIABLE c
+48	R25 := STACK[7]
+49	param R25
+// VARIABLE b
+50	R26 := STACK[6]
+51	param R26
+// VARIABLE k
+52	R27 := STACK[8]
+53	R28 := 0x00000001
+54	R29 :=  R27 - R28
+55	param R29
+56	R30 :=  call 39
+57	goto 58
+58	skip
+// VARIABLE a
+59	R31 := STACK[5]
+60	print R31 2
+61	R32 := 0x0000003E
+62	print R32 2
+// VARIABLE c
+63	R33 := STACK[7]
+64	print R33 2
+65	R34 := 0x0000000A
+66	print R34 2
+// VARIABLE k
+67	R35 := STACK[8]
+68	R36 := 0x00000001
+69	R37 :=  R35 > R36
+70	if R37 goto 72
+71	goto 85
+72	push 0x00000004
+// VARIABLE b
+73	R38 := STACK[6]
+74	param R38
+// VARIABLE a
+75	R39 := STACK[5]
+76	param R39
+// VARIABLE c
+77	R40 := STACK[7]
+78	param R40
+// VARIABLE k
+79	R41 := STACK[8]
+80	R42 := 0x00000001
+81	R43 :=  R41 - R42
+82	param R43
+83	R44 :=  call 39
+84	goto 85
+85	skip
+// ############ Function Code ############
+86	skip
+// VARIABLE i
+87	R45 := STACK[5]
+88	R46 := 0x00000001
+89	R47 :=  R45 = R46
+90	if R47 goto 92
+91	goto 95
+92	R48 := 0x00000000
+93	STACK[6] := R48
+94	goto 111
+// VARIABLE i
+95	R49 := STACK[5]
+96	R50 := 0x00000000
+97	R51 :=  R49 = R50
+98	if R51 goto 100
+99	goto 103
+100	R52 := 0x00000001
+101	STACK[6] := R52
+102	goto 110
+103	push 0x00000002
+// VARIABLE i
+104	R53 := STACK[5]
+105	R54 := 0x00000001
+106	R55 :=  R53 - R54
+107	param R55
+108	R56 :=  call 114
+109	STACK[6] := R56
+110	skip
+111	skip
+// VARIABLE b
+112	R57 := STACK[6]
+113	return R57
+// ############ Function Code ############
+114	skip
+// VARIABLE i
+115	R58 := STACK[5]
+116	R59 := 0x00000001
+117	R60 :=  R58 = R59
+118	if R60 goto 120
+119	goto 123
+120	R61 := 0x00000001
+121	return R61
+122	goto 139
+// VARIABLE i
+123	R62 := STACK[5]
+124	R63 := 0x00000000
+125	R64 :=  R62 = R63
+126	if R64 goto 128
+127	goto 131
+128	R65 := 0x00000000
+129	return R65
+130	goto 138
+131	push 0x00000003
+// VARIABLE i
+132	R66 := STACK[5]
+133	R67 := 0x00000001
+134	R68 :=  R66 - R67
+135	param R68
+136	R69 :=  call 86
+137	return R69
+138	skip
+139	skip
+// ############ Begin Main Code ############
+140	push 0x00000002
+141	R70 := 0x00000006
+142	param R70
+143	R71 :=  call 1
+144	print R71 4
+145	R72 := 0x0000000A
+146	print R72 2
+147	push 0x00000002
+148	R73 := 0x00000006
+149	param R73
+150	R74 :=  call 20
+151	print R74 4
+152	R75 := 0x0000000A
+153	print R75 2
+154	push 0x00000004
+155	R76 := 0x00000041
+156	param R76
+157	R77 := 0x00000042
+158	param R77
+159	R78 := 0x00000043
+160	param R78
+161	R79 := 0x00000004
+162	param R79
+163	R80 :=  call 39
+164	push 0x00000003
+165	R81 := 0x000003E9
+166	param R81
+167	R82 :=  call 86
+168	print R82 3
+169	R83 := 0x0000000A
+170	print R83 2
+171	push 0x00000003
+172	R84 := 0x000003E8
+173	param R84
+174	R85 :=  call 86
+175	print R85 3
+176	R86 := 0x0000000A
+177	print R86 2
+178	stop
+/////////////////////////////////////////////////////// 6.l
+/* **************************************************
+ *
+ * Ce fichier teste l'interprÃ©teur
+ * usage:
+ * ./interpreter progr6.lea
+ *
+ ************************************************** */
+//
+// gestion complexe de la pile
+// 
+// Affichage attendu
+// 720
+// 720
+// A>B
+// A>C
+// B>C
+// A>B
+// C>A
+// C>B
+// A>B
+// A>C
+// B>C
+// B>A
+// C>A
+// B>C
+// A>B
+// A>C
+// B>C
+// false
+// true
+
+var
+x : integer;
+
+function fact1(k: integer): integer
+begin
+	if (k = 1) then
+		return (1);
+	else
+		return (k * fact1(k-1));
+end
+
+function fact2(k: integer): integer
+begin
+	if (k = 1) then
+		return (1);
+	else
+		return (fact2(k-1) * k);
+end
+
+procedure hanoi(a: character, b: character, c: character, k: integer)
+  begin
+  if (k>1) then hanoi(a, c, b, k-1);
+  print(a); print('>'); println(c);
+  if (k>1) then hanoi(b, a, c, k-1);
+end
+
+function impair(i : integer) : boolean;
+function pair(i : integer) : boolean
+var
+  b : boolean;
+begin
+if (i = 1) then
+	     b := false;
+ else if (i = 0) then
+		   b := true;
+ else
+ b := impair(i-1);
+return (b);
+ end
+
+function impair(i : integer) : boolean
+begin
+if (i = 1) then
+  return (true);
+ else if (i = 0) then
+  return (false);
+ else return (pair(i-1));
+ end
+
+begin
+
+println (fact1 (6));
+println (fact2 (6));
+hanoi('A', 'B', 'C', 4);
+println (pair(1001));
+println (pair(1000));
+end
+/////////////////////////////////////////////////////// 7.c
+#STATIC	2611
+// ############ Goto Main Code ############
+0	goto 1
+// ############ Begin Main Code ############
+1	R1 := 0x0000004D
+// VARIABLE week
+2	R2 := 0x00000000
+3	R3 := 0x00000001
+4	R4 := 0x00000000
+5	R5 := 0x00000000
+6	R6 :=  R4 - R5
+// offset: (index - min) * size
+7	R7 :=  R6 * R3
+// array base:R8
+8	R8 :=  R2 + R7
+9	R9 := R8
+10	STATIC[R9] := R1
+11	R10 := 0x00000054
+// VARIABLE week
+12	R11 := 0x00000000
+13	R12 := 0x00000001
+14	R13 := 0x00000001
+15	R14 := 0x00000000
+16	R15 :=  R13 - R14
+// offset: (index - min) * size
+17	R16 :=  R15 * R12
+// array base:R17
+18	R17 :=  R11 + R16
+19	R18 := R17
+20	STATIC[R18] := R10
+21	R19 := 0x00000057
+// VARIABLE week
+22	R20 := 0x00000000
+23	R21 := 0x00000001
+24	R22 := 0x00000002
+25	R23 := 0x00000000
+26	R24 :=  R22 - R23
+// offset: (index - min) * size
+27	R25 :=  R24 * R21
+// array base:R26
+28	R26 :=  R20 + R25
+29	R27 := R26
+30	STATIC[R27] := R19
+31	R28 := 0x00000058
+// VARIABLE year
+32	R29 := 0x00000007
+33	R30 := 0x00000174
+34	R31 := 0x00000002
+35	R32 := 0x00000001
+36	R33 :=  R31 - R32
+// offset: (index - min) * size
+37	R34 :=  R33 * R30
+// array base:R35
+38	R35 :=  R29 + R34
+39	R36 := R35
+40	R37 := 0x0000000C
+41	R38 := 0x00000011
+42	R39 := 0x00000001
+43	R40 :=  R38 - R39
+// offset: (index - min) * size
+44	R41 :=  R40 * R37
+// array base:R42
+45	R42 :=  R36 + R41
+46	R43 := R42
+47	R44 := 0x00000001
+48	R45 := 0x00000003
+49	R46 := 0x00000001
+50	R47 :=  R45 - R46
+// offset: (index - min) * size
+51	R48 :=  R47 * R44
+// array base:R49
+52	R49 :=  R43 + R48
+53	R50 := R49
+54	STATIC[R50] := R28
+55	R51 := 0x00000056
+// VARIABLE year
+56	R52 := 0x00000007
+57	R53 := 0x00000174
+58	R54 := 0x00000004
+59	R55 := 0x00000001
+60	R56 :=  R54 - R55
+// offset: (index - min) * size
+61	R57 :=  R56 * R53
+// array base:R58
+62	R58 :=  R52 + R57
+63	R59 := R58
+64	R60 := 0x0000000C
+65	R61 := 0x00000016
+66	R62 := 0x00000001
+67	R63 :=  R61 - R62
+// offset: (index - min) * size
+68	R64 :=  R63 * R60
+// array base:R65
+69	R65 :=  R59 + R64
+70	R66 := R65
+71	R67 := 0x00000001
+72	R68 := 0x00000007
+73	R69 := 0x00000001
+74	R70 :=  R68 - R69
+// offset: (index - min) * size
+75	R71 :=  R70 * R67
+// array base:R72
+76	R72 :=  R66 + R71
+77	R73 := R72
+78	STATIC[R73] := R51
+// VARIABLE year
+79	R74 := 0x00000007
+80	R75 := 0x00000174
+81	R76 := 0x00000002
+82	R77 := 0x00000001
+83	R78 :=  R76 - R77
+// offset: (index - min) * size
+84	R79 :=  R78 * R75
+// array base:R80
+85	R80 :=  R74 + R79
+// array access
+86	R81 := STATIC[R80]
+87	R82 := 0x0000000C
+88	R83 := 0x00000011
+89	R84 := 0x00000001
+90	R85 :=  R83 - R84
+// offset: (index - min) * size
+91	R86 :=  R85 * R82
+// array base:R87
+92	R87 :=  R81 + R86
+93	R88 := R87
+94	R89 := 0x00000001
+95	R90 := 0x00000003
+96	R91 := 0x00000001
+97	R92 :=  R90 - R91
+// offset: (index - min) * size
+98	R93 :=  R92 * R89
+// array base:R94
+99	R94 :=  R88 + R93
+100	R95 := R94
+101	print R95 2
+102	R96 := 0x0000000A
+103	print R96 2
+// VARIABLE year
+104	R97 := 0x00000007
+105	R98 := 0x00000174
+106	R99 := 0x00000002
+107	R100 := 0x00000001
+108	R101 :=  R99 - R100
+// offset: (index - min) * size
+109	R102 :=  R101 * R98
+// array base:R103
+110	R103 :=  R97 + R102
+// array access
+111	R104 := STATIC[R103]
+112	R105 := 0x0000000C
+113	R106 := 0x00000011
+114	R107 := 0x00000001
+115	R108 :=  R106 - R107
+// offset: (index - min) * size
+116	R109 :=  R108 * R105
+// array base:R110
+117	R110 :=  R104 + R109
+118	R111 := R110
+119	R112 := 0x00000001
+120	R113 := 0x00000004
+121	R114 := 0x00000001
+122	R115 :=  R113 - R114
+// offset: (index - min) * size
+123	R116 :=  R115 * R112
+// array base:R117
+124	R117 :=  R111 + R116
+125	R118 := R117
+126	print R118 2
+127	R119 := 0x0000000A
+128	print R119 2
+// VARIABLE week
+129	R120 := 0x00000000
+130	R121 := 0x00000001
+131	R122 := 0x00000001
+132	R123 := 0x00000000
+133	R124 :=  R122 - R123
+// offset: (index - min) * size
+134	R125 :=  R124 * R121
+// array base:R126
+135	R126 :=  R120 + R125
+// array access
+136	R127 := STATIC[R126]
+137	print R127 2
+138	R128 := 0x0000000A
+139	print R128 2
+140	stop
+////////////////////////////////////////////////////// 7.l
+/* **************************************************
+ *
+ * Ce fichier teste l'interprÃ©teur
+ * usage:
+ * ./interpreter progr7.lea
+ * RÃ©sultat attendu
+ * X
+ * \0
+ * T
+ ************************************************** */
+//
+// tableaux
+// 
+// Affichage attendu:
+// X
+// (caractÃ¨re null)
+// T
+//
+var
+   week : array [0 .. 6] of character;
+   year : array [1..7] of array [1 .. 31] of array [1..12] of character;
+   
+begin
+   week[0] := 'M';
+   week[1] := 'T';
+   week[2] := 'W';
+
+   year [2] [17] [3] := 'X';
+   year [4] [22] [7] := 'V';
+   
+println(year [2] [17] [3]);
+println(year [2] [17] [4]);
+println(week[1]);
+   
+end
+/////////////////////////////////////////////////////////////// 8.c
+#STATIC	2610
+// ############ Goto Main Code ############
+0	goto 1
+// ############ Begin Main Code ############
+1	R1 := 0x0000004D
+// VARIABLE week
+2	R2 := 0x00000001
+3	R3 := 0x00000001
+4	R4 := 0x00000001
+5	R5 := 0x00000001
+6	R6 :=  R4 - R5
+// offset: (index - min) * size
+7	R7 :=  R6 * R3
+// array base:R8
+8	R8 :=  R2 + R7
+9	R9 := R8
+10	STATIC[R9] := R1
+11	R10 := 0x00000054
+// VARIABLE week
+12	R11 := 0x00000001
+13	R12 := 0x00000001
+14	R13 := 0x00000002
+15	R14 := 0x00000001
+16	R15 :=  R13 - R14
+// offset: (index - min) * size
+17	R16 :=  R15 * R12
+// array base:R17
+18	R17 :=  R11 + R16
+19	R18 := R17
+20	STATIC[R18] := R10
+21	R19 := 0x00000057
+// VARIABLE week
+22	R20 := 0x00000001
+23	R21 := 0x00000001
+24	R22 := 0x00000003
+25	R23 := 0x00000001
+26	R24 :=  R22 - R23
+// offset: (index - min) * size
+27	R25 :=  R24 * R21
+// array base:R26
+28	R26 :=  R20 + R25
+29	R27 := R26
+30	STATIC[R27] := R19
+31	R28 := 0x00000058
+// VARIABLE year
+32	R29 := 0x00000006
+33	R30 := 0x00000174
+34	R31 := 0x00000006
+35	R32 := 0x00000000
+36	R33 :=  R31 - R32
+// offset: (index - min) * size
+37	R34 :=  R33 * R30
+// array base:R35
+38	R35 :=  R29 + R34
+39	R36 := R35
+40	R37 := 0x0000000C
+41	R38 := 0x00000011
+42	R39 := 0x00000001
+43	R40 :=  R38 - R39
+// offset: (index - min) * size
+44	R41 :=  R40 * R37
+// array base:R42
+45	R42 :=  R36 + R41
+46	R43 := R42
+47	R44 := 0x00000001
+48	R45 := 0x00000002
+49	R46 := 0x00000000
+50	R47 :=  R45 - R46
+// offset: (index - min) * size
+51	R48 :=  R47 * R44
+// array base:R49
+52	R49 :=  R43 + R48
+53	R50 := R49
+54	STATIC[R50] := R28
+55	R51 := 0x00000056
+// VARIABLE year
+56	R52 := 0x00000006
+57	R53 := 0x00000174
+58	R54 := 0x00000006
+59	R55 := 0x00000000
+60	R56 :=  R54 - R55
+// offset: (index - min) * size
+61	R57 :=  R56 * R53
+// array base:R58
+62	R58 :=  R52 + R57
+63	R59 := R58
+64	R60 := 0x0000000C
+65	R61 := 0x00000001
+66	R62 := 0x00000001
+67	R63 :=  R61 - R62
+// offset: (index - min) * size
+68	R64 :=  R63 * R60
+// array base:R65
+69	R65 :=  R59 + R64
+70	R66 := R65
+71	R67 := 0x00000001
+72	R68 := 0x00000002
+73	R69 := 0x00000000
+74	R70 :=  R68 - R69
+// offset: (index - min) * size
+75	R71 :=  R70 * R67
+// array base:R72
+76	R72 :=  R66 + R71
+77	R73 := R72
+78	STATIC[R73] := R51
+// VARIABLE year
+79	R74 := 0x00000006
+80	R75 := 0x00000174
+81	R76 := 0x00000006
+82	R77 := 0x00000000
+83	R78 :=  R76 - R77
+// offset: (index - min) * size
+84	R79 :=  R78 * R75
+// array base:R80
+85	R80 :=  R74 + R79
+// array access
+86	R81 := STATIC[R80]
+87	R82 := 0x0000000C
+88	R83 := 0x00000001
+89	R84 := 0x00000001
+90	R85 :=  R83 - R84
+// offset: (index - min) * size
+91	R86 :=  R85 * R82
+// array base:R87
+92	R87 :=  R81 + R86
+93	R88 := R87
+94	R89 := 0x00000001
+95	R90 := 0x00000002
+96	R91 := 0x00000000
+97	R92 :=  R90 - R91
+// offset: (index - min) * size
+98	R93 :=  R92 * R89
+// array base:R94
+99	R94 :=  R88 + R93
+100	R95 := R94
+101	print R95 2
+102	R96 := 0x0000000A
+103	print R96 2
+// VARIABLE year
+104	R97 := 0x00000006
+105	R98 := 0x00000174
+106	R99 := 0x00000006
+107	R100 := 0x00000000
+108	R101 :=  R99 - R100
+// offset: (index - min) * size
+109	R102 :=  R101 * R98
+// array base:R103
+110	R103 :=  R97 + R102
+// array access
+111	R104 := STATIC[R103]
+112	R105 := 0x0000000C
+113	R106 := 0x00000011
+114	R107 := 0x00000001
+115	R108 :=  R106 - R107
+// offset: (index - min) * size
+116	R109 :=  R108 * R105
+// array base:R110
+117	R110 :=  R104 + R109
+118	R111 := R110
+119	R112 := 0x00000001
+120	R113 := 0x00000002
+121	R114 := 0x00000000
+122	R115 :=  R113 - R114
+// offset: (index - min) * size
+123	R116 :=  R115 * R112
+// array base:R117
+124	R117 :=  R111 + R116
+125	R118 := R117
+126	print R118 2
+127	R119 := 0x0000000A
+128	print R119 2
+// VARIABLE week
+129	R120 := 0x00000001
+130	R121 := 0x00000001
+131	R122 := 0x00000002
+132	R123 := 0x00000001
+133	R124 :=  R122 - R123
+// offset: (index - min) * size
+134	R125 :=  R124 * R121
+// array base:R126
+135	R126 :=  R120 + R125
+// array access
+136	R127 := STATIC[R126]
+137	print R127 2
+138	R128 := 0x0000000A
+139	print R128 2
+140	stop
+////////////////////////////////////////////////////////////// 8.l
+* **************************************************
+ *
+ * Ce fichier teste l'interprÃ©teur
+ * usage:
+ * ./interpreter progr8.lea
+ *
+ ************************************************** */
+//
+// tableaux et enumÃ©rÃ©s
+// 
+// Affichage Attendu
+// V
+// X
+// T
+
+type
+days = (SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY);
+months = (JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER);
+
+var
+   d : SUNDAY .. SATURDAY;
+   week :  array [MONDAY .. FRIDAY] of character;
+   year : array [SUNDAY .. SATURDAY] of array [1 .. 31] of array [JANUARY .. DECEMBER] of character;
+   
+begin
+   week[MONDAY] := 'M';
+   week[TUESDAY] := 'T';
+   week[WEDNESDAY] := 'W';
+
+   year [SATURDAY] [17] [MARCH] := 'X';
+   year [SATURDAY] [1] [MARCH] := 'V';
+   
+println(year [SATURDAY] [1] [MARCH]);
+println(year [SATURDAY] [17] [MARCH]);
+println(week[TUESDAY]);
+   
+end
+
+/////////////////////////////////////////////////////////////9.c
+#STATIC	166
+// ############ Goto Main Code ############
+0	goto 1
+// ############ Begin Main Code ############
+1	R1 := 0x00000001
+2	STATIC[0] := R1
+3	R2 := 0x00000006
+4	STATIC[0] := R2
+5	R3 := 0x00000001
+// VARIABLE week
+6	R4 := 0x00000004
+7	R5 := 0x00000001
+8	R6 := 0x00000001
+9	R7 := 0x00000000
+10	R8 :=  R6 - R7
+// offset: (index - min) * size
+11	R9 :=  R8 * R5
+// array base:R10
+12	R10 :=  R4 + R9
+13	R11 := R10
+14	STATIC[R11] := R3
+// VARIABLE week
+15	R12 := 0x00000004
+16	R13 := 0x00000001
+17	R14 := 0x00000001
+18	R15 := 0x00000000
+19	R16 :=  R14 - R15
+// offset: (index - min) * size
+20	R17 :=  R16 * R13
+// array base:R18
+21	R18 :=  R12 + R17
+// array access
+22	R19 := STATIC[R18]
+23	print R19 3
+24	R20 := 0x0000000A
+25	print R20 2
+26	R21 := 0x00000001
+// VARIABLE days_of_month
+27	R22 := 0x0000000B
+28	R23 := 0x0000001F
+29	R24 := 0x00000001
+30	R25 := 0x00000001
+31	R26 :=  R24 - R25
+// offset: (index - min) * size
+32	R27 :=  R26 * R23
+// array base:R28
+33	R28 :=  R22 + R27
+34	R29 := R28
+35	R30 := 0x00000001
+36	R31 := 0x00000018
+37	R32 := 0x00000001
+38	R33 :=  R31 - R32
+// offset: (index - min) * size
+39	R34 :=  R33 * R30
+// array base:R35
+40	R35 :=  R29 + R34
+41	R36 := R35
+42	STATIC[R36] := R21
+// VARIABLE days_of_month
+43	R37 := 0x0000000B
+44	R38 := 0x0000001F
+45	R39 := 0x00000001
+46	R40 := 0x00000001
+47	R41 :=  R39 - R40
+// offset: (index - min) * size
+48	R42 :=  R41 * R38
+// array base:R43
+49	R43 :=  R37 + R42
+// array access
+50	R44 := STATIC[R43]
+51	R45 := 0x00000001
+52	R46 := 0x00000017
+53	R47 := 0x00000001
+54	R48 :=  R46 - R47
+// offset: (index - min) * size
+55	R49 :=  R48 * R45
+// array base:R50
+56	R50 :=  R44 + R49
+57	R51 := R50
+58	print R51 3
+59	R52 := 0x0000000A
+60	print R52 2
+// VARIABLE days_of_month
+61	R53 := 0x0000000B
+62	R54 := 0x0000001F
+63	R55 := 0x00000001
+64	R56 := 0x00000001
+65	R57 :=  R55 - R56
+// offset: (index - min) * size
+66	R58 :=  R57 * R54
+// array base:R59
+67	R59 :=  R53 + R58
+// array access
+68	R60 := STATIC[R59]
+69	R61 := 0x00000001
+70	R62 := 0x00000018
+71	R63 := 0x00000001
+72	R64 :=  R62 - R63
+// offset: (index - min) * size
+73	R65 :=  R64 * R61
+// array base:R66
+74	R66 :=  R60 + R65
+75	R67 := R66
+76	print R67 3
+77	R68 := 0x0000000A
+78	print R68 2
+// VARIABLE days_of_month
+79	R69 := 0x0000000B
+80	R70 := 0x0000001F
+81	R71 := 0x00000001
+82	R72 := 0x00000001
+83	R73 :=  R71 - R72
+// offset: (index - min) * size
+84	R74 :=  R73 * R70
+// array base:R75
+85	R75 :=  R69 + R74
+// array access
+86	R76 := STATIC[R75]
+87	R77 := 0x00000001
+88	R78 := 0x00000019
+89	R79 := 0x00000001
+90	R80 :=  R78 - R79
+// offset: (index - min) * size
+91	R81 :=  R80 * R77
+// array base:R82
+92	R82 :=  R76 + R81
+93	R83 := R82
+94	print R83 3
+95	R84 := 0x0000000A
+96	print R84 2
+97	stop
+////////////////////////////////////////////////////////////9.l
+/* **************************************************
+ *
+ * Ce fichier teste l'interprÃ©teur
+ * usage:
+ * ./interpreter progr9.lea
+ *
+ ************************************************** */
+//
+// tableaux et enumÃ©rÃ©s
+// 
+// Affichage Attendu
+// true
+// false
+// true
+// false
+
+type
+days = (SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY);
+months = (JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER);
+range1 = FEBRUARY..MAY;
+dates = 1..31;
+
+var
+	a : MONDAY .. FRIDAY;
+	b : integer;
+	c : days;
+	d : (A, B, C);
+	week :  array [SUNDAY .. SATURDAY] of boolean;
+	days_of_month :  array [MONDAY .. FRIDAY] of array [dates] of boolean;
+
+
+begin
+a := MONDAY;
+a := SATURDAY; // pas de vÃ©rification
+week[MONDAY] := true;
+println (week[MONDAY]);
+days_of_month[MONDAY][24] := true;
+println (days_of_month[MONDAY][23]);
+println (days_of_month[MONDAY][24]);
+println (days_of_month[MONDAY][25]);
+end
+////////////////////////////////////////////////////////////////////////////// 10.c
+#STATIC	46
+// ############ Goto Main Code ############
+0	goto 1
+// ############ Begin Main Code ############
+1	R1 := 0x00000001
+2	STATIC[0] := R1
+// VARIABLE b
+3	R2 := STATIC[0]
+4	print R2 3
+5	R3 := 0x0000000A
+6	print R3 2
+7	R4 := 0x00000001
+8	STATIC[41] := R4
+// VARIABLE x
+9	R5 := STATIC[41]
+10	R6 := 0x0000000A
+11	R7 :=  R5 <= R6
+12	if R7 goto 14
+13	goto 35
+14	R8 := 0x0000FFDC
+// VARIABLE x
+15	R9 := STATIC[41]
+16	R10 := 0x00000010
+17	R11 := 0x00000002
+18	R12 :=  R10 / R11
+19	R13 :=  R9 * R12
+20	R14 :=  R8 + R13
+// VARIABLE a
+21	R15 := 0x00000001
+22	R16 := 0x00000001
+// VARIABLE x
+23	R17 := STATIC[41]
+24	R18 := 0x00000001
+25	R19 :=  R17 - R18
+// offset: (index - min) * size
+26	R20 :=  R19 * R16
+// array base:R21
+27	R21 :=  R15 + R20
+28	R22 := R21
+29	STATIC[R22] := R14
+// VARIABLE x
+30	R23 := STATIC[41]
+31	R24 := 0x00000001
+32	R25 :=  R23 + R24
+33	STATIC[41] := R25
+34	goto 9
+35	skip
+36	R26 := 0x00000001
+37	STATIC[41] := R26
+// VARIABLE x
+38	R27 := STATIC[41]
+39	R28 := 0x0000000A
+40	R29 :=  R27 <= R28
+41	if R29 goto 43
+42	goto 59
+// VARIABLE a
+43	R30 := 0x00000001
+44	R31 := 0x00000001
+// VARIABLE x
+45	R32 := STATIC[41]
+46	R33 := 0x00000001
+47	R34 :=  R32 - R33
+// offset: (index - min) * size
+48	R35 :=  R34 * R31
+// array base:R36
+49	R36 :=  R30 + R35
+// array access
+50	R37 := STATIC[R36]
+51	print R37 4
+52	R38 := 0x0000000A
+53	print R38 2
+// VARIABLE x
+54	R39 := STATIC[41]
+55	R40 := 0x00000001
+56	R41 :=  R39 + R40
+57	STATIC[41] := R41
+58	goto 38
+59	skip
+60	R42 := 0xFFFFFFFA
+// VARIABLE c
+61	R43 := 0x0000000B
+62	R44 := 0x00000003
+63	R45 := 0x00000001
+64	R46 := 0x00000001
+65	R47 :=  R45 - R46
+// offset: (index - min) * size
+66	R48 :=  R47 * R44
+// array base:R49
+67	R49 :=  R43 + R48
+68	R50 := R49
+69	R51 := 0x00000001
+70	R52 := 0x00000001
+71	R53 := 0x00000001
+72	R54 :=  R52 - R53
+// offset: (index - min) * size
+73	R55 :=  R54 * R51
+// array base:R56
+74	R56 :=  R50 + R55
+75	R57 := R56
+76	STATIC[R57] := R42
+77	R58 := 0xFFFFFFFB
+// VARIABLE c
+78	R59 := 0x0000000B
+79	R60 := 0x00000003
+80	R61 := 0x00000001
+81	R62 := 0x00000001
+82	R63 :=  R61 - R62
+// offset: (index - min) * size
+83	R64 :=  R63 * R60
+// array base:R65
+84	R65 :=  R59 + R64
+85	R66 := R65
+86	R67 := 0x00000001
+87	R68 := 0x00000002
+88	R69 := 0x00000001
+89	R70 :=  R68 - R69
+// offset: (index - min) * size
+90	R71 :=  R70 * R67
+// array base:R72
+91	R72 :=  R66 + R71
+92	R73 := R72
+93	STATIC[R73] := R58
+94	R74 := 0xFFFFFFFC
+// VARIABLE c
+95	R75 := 0x0000000B
+96	R76 := 0x00000003
+97	R77 := 0x00000001
+98	R78 := 0x00000001
+99	R79 :=  R77 - R78
+// offset: (index - min) * size
+100	R80 :=  R79 * R76
+// array base:R81
+101	R81 :=  R75 + R80
+102	R82 := R81
+103	R83 := 0x00000001
+104	R84 := 0x00000003
+105	R85 := 0x00000001
+106	R86 :=  R84 - R85
+// offset: (index - min) * size
+107	R87 :=  R86 * R83
+// array base:R88
+108	R88 :=  R82 + R87
+109	R89 := R88
+110	STATIC[R89] := R74
+111	R90 := 0xFFFFFFFD
+// VARIABLE c
+112	R91 := 0x0000000B
+113	R92 := 0x00000003
+114	R93 := 0x00000002
+115	R94 := 0x00000001
+116	R95 :=  R93 - R94
+// offset: (index - min) * size
+117	R96 :=  R95 * R92
+// array base:R97
+118	R97 :=  R91 + R96
+119	R98 := R97
+120	R99 := 0x00000001
+121	R100 := 0x00000001
+122	R101 := 0x00000001
+123	R102 :=  R100 - R101
+// offset: (index - min) * size
+124	R103 :=  R102 * R99
+// array base:R104
+125	R104 :=  R98 + R103
+126	R105 := R104
+127	STATIC[R105] := R90
+128	R106 := 0xFFFFFFFE
+// VARIABLE c
+129	R107 := 0x0000000B
+130	R108 := 0x00000003
+131	R109 := 0x00000002
+132	R110 := 0x00000001
+133	R111 :=  R109 - R110
+// offset: (index - min) * size
+134	R112 :=  R111 * R108
+// array base:R113
+135	R113 :=  R107 + R112
+136	R114 := R113
+137	R115 := 0x00000001
+138	R116 := 0x00000002
+139	R117 := 0x00000001
+140	R118 :=  R116 - R117
+// offset: (index - min) * size
+141	R119 :=  R118 * R115
+// array base:R120
+142	R120 :=  R114 + R119
+143	R121 := R120
+144	STATIC[R121] := R106
+145	R122 := 0xFFFFFFFF
+// VARIABLE c
+146	R123 := 0x0000000B
+147	R124 := 0x00000003
+148	R125 := 0x00000002
+149	R126 := 0x00000001
+150	R127 :=  R125 - R126
+// offset: (index - min) * size
+151	R128 :=  R127 * R124
+// array base:R129
+152	R129 :=  R123 + R128
+153	R130 := R129
+154	R131 := 0x00000001
+155	R132 := 0x00000003
+156	R133 := 0x00000001
+157	R134 :=  R132 - R133
+// offset: (index - min) * size
+158	R135 :=  R134 * R131
+// array base:R136
+159	R136 :=  R130 + R135
+160	R137 := R136
+161	STATIC[R137] := R122
+// VARIABLE c
+162	R138 := 0x0000000B
+163	R139 := 0x00000003
+164	R140 := 0x00000002
+165	R141 := 0x00000001
+166	R142 :=  R140 - R141
+// offset: (index - min) * size
+167	R143 :=  R142 * R139
+// array base:R144
+168	R144 :=  R138 + R143
+// array access
+169	R145 := STATIC[R144]
+170	R146 := 0x00000001
+171	R147 := 0x00000002
+172	R148 := 0x00000001
+173	R149 :=  R147 - R148
+// offset: (index - min) * size
+174	R150 :=  R149 * R146
+// array base:R151
+175	R151 :=  R145 + R150
+176	R152 := R151
+177	print R152 4
+178	R153 := 0x0000000A
+179	print R153 2
+180	R154 := malloc 1
+181	STATIC[43] := R154
+182	R155 := 0x1B3A0C83
+// VARIABLE w
+183	R156 := STATIC[43]
+184	HEAP[R156] := R155
+185	R157 := malloc 1
+186	STATIC[44] := R157
+// VARIABLE z
+187	R158 := STATIC[44]
+188	print R158 5
+189	R159 := 0x0000000A
+190	print R159 2
+191	R160 := 0x075BCD15
+// VARIABLE z
+192	R161 := STATIC[44]
+193	HEAP[R161] := R160
+// VARIABLE w
+194	R162 := STATIC[43]
+195	R163 := HEAP[R162]
+196	print R163 4
+197	R164 := 0x0000000A
+198	print R164 2
+// VARIABLE z
+199	R165 := STATIC[44]
+200	R166 := HEAP[R165]
+201	print R166 4
+202	R167 := 0x0000000A
+203	print R167 2
+// VARIABLE z
+204	R168 := STATIC[44]
+205	free R168
+206	R169 := 0xFFFFFFFF
+207	STATIC[44] := R169
+// VARIABLE z
+208	R170 := STATIC[44]
+209	print R170 5
+210	R171 := 0x0000000A
+211	print R171 2
+212	R172 := malloc 10
+213	STATIC[45] := R172
+214	R173 := 0x00000024
+// VARIABLE p
+215	R174 := STATIC[45]
+216	R175 := HEAP[R174]
+217	R176 := 0x00000001
+218	R177 := 0x00000008
+219	R178 := 0x00000001
+220	R179 :=  R177 - R178
+// offset: (index - min) * size
+221	R180 :=  R179 * R176
+// array base:R181
+222	R181 :=  R175 + R180
+223	R182 := R181
+224	STATIC[R182] := R173
+// VARIABLE p
+225	R183 := STATIC[45]
+226	R184 := HEAP[R183]
+227	R185 := 0x00000001
+228	R186 := 0x00000008
+229	R187 := 0x00000001
+230	R188 :=  R186 - R187
+// offset: (index - min) * size
+231	R189 :=  R188 * R185
+// array base:R190
+232	R190 :=  R184 + R189
+// array access
+233	R191 := STATIC[R190]
+234	print R191 4
+235	R192 := 0x0000000A
+236	print R192 2
+237	R193 := 0x00000001
+238	R194 := - R193
+239	STATIC[42] := R194
+// VARIABLE y
+240	R195 := STATIC[42]
+241	print R195 4
+242	R196 := 0x0000000A
+243	print R196 2
+244	R197 := 0x00000001
+245	R198 := 0x00000002
+246	R199 :=  R197 + R198
+247	R200 := 0x00000003
+248	R201 := 0x00000004
+249	R202 :=  R200 * R201
+250	R203 := 0x00000005
+251	R204 :=  R202 / R203
+252	R205 :=  R199 - R204
+253	R206 := 0x00000006
+254	R207 :=  R205 < R206
+255	R208 := 0x00000007
+256	R209 := 0x00000008
+257	R210 :=  R208 <= R209
+258	R211 :=  R207 && R210
+259	R212 := 0x00000009
+260	R213 := 0x0000000A
+261	R214 :=  R212 > R213
+262	R215 :=  R211 && R214
+263	R216 := 0x0000000B
+264	R217 := - R216
+265	R218 := 0x0000000C
+266	R219 :=  R217 >= R218
+267	R220 :=  R215 || R219
+268	R221 := 0x0000000D
+269	R222 := 0x0000000E
+270	R223 :=  R221 = R222
+271	R224 := ! R223
+272	R225 := 0x0000000F
+273	R226 := 0x00000010
+274	R227 :=  R225 != R226
+275	R228 :=  R224 && R227
+276	R229 :=  R220 || R228
+277	STATIC[0] := R229
+// VARIABLE b
+278	R230 := STATIC[0]
+279	print R230 3
+280	R231 := 0x0000000A
+281	print R231 2
+282	stop
+
+/////////////////////////////////////////////////////////////////////////////10.l
+/* **************************************************
+ *
+ * Ce fichier teste des indirections plus complexes
+ *
+ * Affichage attendu:
+ * true
+ * 65508
+ * 65516
+ * 65524
+ * 65532
+ * 65540
+ * 65548
+ * 65556
+ * 65564
+ * 65572
+ * 65580
+ * -2
+ * &0000000D (ou autre adresse non nulle)
+ * 456789123
+ * 123456789
+ * null
+ * 36
+ * -1
+ * true
+ * true
+ ************************************************** */
+var
+b : boolean;
+a : array [1..10] of integer;
+c : array [1..10] of array [1..3] of integer;
+x, y : integer;
+w, z : ^integer;
+p : ^array[1..10] of integer;
+
+begin
+b := true;
+println(b);
+x := 1;
+while (x <= 10) do begin
+       a[x] := 65500 + x * (16 / 2);
+       x := x + 1;
+       end
+x := 1;
+while (x <= 10) do begin
+       println(a[x]);
+       x := x + 1;
+       end
+c[1][1] := 0xFFFFFFFA;
+c[1][2] := 0xFFFFFFFB;
+c[1][3] := 0xFFFFFFFC;
+c[2][1] := 0xFFFFFFFD;
+c[2][2] := 0xFFFFFFFE;
+c[2][3] := 0xFFFFFFFF;
+println(c[2][2]);
+new(w);
+w^ := 456789123;
+new(z);
+println(z);
+z^ := 123456789;
+println(w^);
+println(z^);
+dispose(z);
+println(z);
+new(p);
+p^[8] := 36;
+println(p^[8]);
+y := -1;
+println(y);
+b := 1 + 2 - 3 * 4 / 5 < 6 && 7 <= 8 && 9 > 10 || -11 >= 12 || !(13 = 14) && 15 != 16; 
+println (b);
+end
+
+///////////////////////////////////////////////////////////////////////////////////////11.c
+
+#STATIC	0
+// ############ Goto Main Code ############
+0	goto 17
+// ############ Function Code ############
+1	skip
+// VARIABLE i
+2	R1 := STACK[5]
+3	R2 := 0x00000001
+4	R3 :=  R1 + R2
+5	return R3
+// ############ Function Code ############
+6	skip
+7	R4 := 0x00000064
+8	STACK[7] := R4
+// VARIABLE i
+9	R5 := STACK[5]
+// VARIABLE j
+10	R6 := STACK[6]
+11	R7 :=  R5 + R6
+// VARIABLE k
+12	R8 := STACK[7]
+13	R9 :=  R7 + R8
+14	R10 := 0x00000064
+15	R11 :=  R9 - R10
+16	return R11
+// ############ Begin Main Code ############
+17	push 0x00000004
+18	R12 := 0x00000003
+19	param R12
+20	R13 := 0x00000005
+21	param R13
+22	R14 :=  call 6
+23	print R14 4
+24	R15 := 0x0000000A
+25	print R15 2
+26	push 0x00000002
+27	push 0x00000002
+28	push 0x00000002
+29	push 0x00000002
+30	R16 := 0x00000100
+31	param R16
+32	R17 :=  call 1
+33	param R17
+34	R18 :=  call 1
+35	param R18
+36	R19 :=  call 1
+37	param R19
+38	R20 :=  call 1
+39	print R20 4
+40	R21 := 0x0000000A
+41	print R21 2
+42	push 0x00000004
+43	R22 := 0x00000030
+44	param R22
+45	push 0x00000004
+46	R23 := 0x00000050
+47	param R23
+48	push 0x00000004
+49	R24 := 0x00000070
+50	param R24
+51	R25 := 0x00000110
+52	param R25
+53	R26 :=  call 6
+54	param R26
+55	R27 :=  call 6
+56	param R27
+57	R28 :=  call 6
+58	print R28 4
+59	R29 := 0x0000000A
+60	print R29 2
+61	stop
+//////////////////////////////////////////////////////////////////////////////////////11.l
+/* **************************************************
+ * Gestion de la pile plus sophistiquÃ©e
+ * Affichage attendu:
+ * 8
+ * 260
+ * 512
+ ************************************************** */
+
+function succ (i:integer):integer
+begin
+return (i+1);
+end
+
+
+function sum(i : integer, j : integer) : integer
+var k:integer;
+begin
+  k := 100;
+  return (i+j+k-100);
+end
+
+begin
+println(sum(3, 5));
+println(succ(succ(succ(succ(0x100)))));
+println(sum(0x30, sum(0x50, sum (0x70, 0x110))));
+end
+//////////////////////////////////////////////////////////////////////12.c
+/////////////////////////////////////////////////////////////////////12.l
+

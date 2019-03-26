@@ -1,0 +1,416 @@
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+STAGE GRAMMAIRES 
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+cours 1 (Lundi 15/01/18) 
+-------------------------
+-systeme de réécriture semi-Thuéien
+-grammaire algébrique
+-dérivation- dérivation gauche-dérivation droite;
+-langage algébrique
+
+cours 2 (Mardi 16/01/18):
+-------------------------
+- arbre de dérivation
+- parcours d'un arbre de dérivation <--> dérivations de la frontière de l'arbre
+- ambiguité d'une grammaire
+- non-terminaux productifs, accessibles
+- réduction d'une grammaire algébrique à une grammaire dont
+tout non-terminal est productif et accessible
+
+[4\times 1h 20 de TD sur les grammaires algébriques]
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+COMPILATION
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+cours 3 (Vendredi 19/01/18):
+---------------------------
+- Langage IMP:
+ * syntaxe (définie par une grammaire algébrique)
+ [qui s'avere ambigue, mais ils s'en apercevront plus tard]
+ * sémantique: la sémantique operationnelle a petits pas (defimp.pdf ci-joint).
+ 
+cours 4 (Lundi 22/01/18):
+-----------------------
+- Un exemple de programme imp (pex4.ip ci-joint)
+- Deroulement de la semantique operationelle a petits pas sur deux exemples
+(un avec seulement des operations arith et des affectations; le second avec un while).
+- Notions de compilateur et d'interprete (ou interpreteur).
+N.B. l'existence d'un programme d'interpretation I pour le langage L, sur la machine M
+est assuré dès que M est une machine "universelle".
+- Schema general des phases d'un compilateur.
+- sur l'exemple pex4.ip:
+ * analyse lexicale
+ * analyse syntaxique
+ * production de code intermediaire (voir pex4.res)
+ * production de code Y86 (voir pex4.res)
+ 
+cours 5 (Vendredi 26/01/17):
+-------------------------
+Analyse lexicale.
+
+1- Langages rationnels versus reconnaissables
+  * bref rappel
+  * automates a transitions regulieres:
+  \begin{defi}
+  \label{defi_generale}
+  Un {\em automate} fini g\'en\'eralis\'e est un 5-uplet,
+  ${\cal A}= <X,Q,D,A,\delta>$ o\`u
+  \begin{itemize}
+  \item $X$ est un ensemble fini,l'alphabet d' entr\'ee
+  \item $Q$ est un ensemble fini, l' ensemble des \'etats
+  \item $D \subset Q$ est l' ensemble des etats de d\'epart
+  \item $A \subset Q$ est l' ensemble des etats d'arriv\'ee
+  \item $\delta \subset Q \times REGEXP(X) \times Q$ est l' ensemble des
+  transitions
+  \end{itemize}
+  \end{defi}
+  - theoreme: ils reconnaissent exactement les langages reguliers
+  * exemple: aut. fini generalise reconnaissant (ab*cd*)* [voir mixte.l]
+  * definitions regulieres enchassees (mais bien-fondees)
+  
+2- Generateur FLEX d'analyseurs lexicaux.
+2.1-
+  * principe: .l --> .c --> a.out
+  * les 3 sections (definitions, regles, fonctions )
+  * semantique des regles: prefixe le plus long, a egalite de longueur, premier lexeme
+  * "start conditions"
+  * quelques idiomes qui etendent les expressions regulieres:
+   [a-z], point (tout caractere qui n'est pas un passage a la ligne)
+  *exemple: mixte.l [fichier joint]
+  
+2.2- Extensions:
+  * extensions des operations regulieres (comme dans sed, bash, etc ...):
+   e^+, complement
+  * contextes droits (indiques par /),
+  * yyless(n),
+  * REJECT,
+
+En fait: je n'ai pas eu le temps de traiter les extensions (a faire en TD/TP)
+
+cours 6 (Lundi 29/01/18):
+-------------------------
+Automates  pile.
+
+0- Modèles de calcul: c'est quoi ? ca sert a quoi ?
+Réponses:
+- un modèle décrit mathématiquement un processus de calcul; les machines
+sont concues à partir des modèles et en sont des incarnations.
+- un modèle moins puissant que le modèle utilisé pour les ordinateurs,
+peut être utile:
+* calculs plus économes en temps
+* on peut mieux "maitriser" le modèle i.e. savoir
+(par un calcul qui prend en entree A) si une instance A du modèle a une propriété
+[accessibilité, conformité à la spécification, etc ... ]
+- un modèle moins puissant peut être {\em simulé} dans une machine qui
+incarne un modèle plus puissant.
+
+1- Les automates:
+classification en fonction de la "structure memoire" i.e. l'ensemble de ses valeurs
+possibles et les operations autorisees:
+a memoire finie, a 1 compteur, a p (\geq 2) compteurs, a pile, a arbre, a pile de piles,
+a piles d'arbres, etc ...
+
+2- Automates a pile: 
+* definition, 
+* exemple ($L= \{ u \in \{a,b\}^*\# \mid|u|_a = |u|_b \}$
+* notion de determinisme (informel)
+
+3- Theoreme 3: les langages engendres par les grammaires c.f. sont exactement les
+langages reconus par des automates a pile.
+
+Grammaires --> automates:
+automate d'analyse descendante
+
+N.B.: je laisse a Adrian le soin d'expliquer la reciproque: 
+partant d'un automate a pile, comment construire une grammaire c.f.
+
+cours 7 (Lundi 05/02/18):
+-------------------------
+Termine l'automate d'analyse descendante d'une grammaire c.f. G:
+* definition,
+* exemple: grammaire S -> aSSb + c
+* propriete: la suite des regles utilisees est une derivation gauche dans G
+
+Automate d'analyse ascendante d'une grammaire c.f. G:
+* definition,
+* exemple: grammaire S -> aSSb + c
+* propriete: la suite des regles utilisees est le miroir d'une derivation droite
+dans G.
+
+Notion d'analyseur deterministe: pas de conflit decaller-reduire, ni reduire-reduire.
+Apercu en avant:
+* classes de grammaires ou l'automate d'analyse descendante est deterministe: LL(1)
+* classes de grammaires ou l'automate d'analyse ascendante est deterministe:
+LR(0), SLR(1), LALR(1), LR(1) .
+
+cours 8 (Lundi 12/02/18):
+-------------------------
+1- Grammaires LL(1).
+
+Grammaires LL(1) [Left-to-right, top-down, with Look-ahead of length 1].
+Idée générale: une classe de grammaires permettant une analyse descendante,
+de gauche à droite, déterministe. Une "vue-en-avant" sur un caractère après
+le caractère analysé est autorisée.
+
+Notions préliminaires:
+pour tout non-terminal v: ensembles Premier (v) et Suivant (v).
+
+Définition:
+G est LL(1) ssi, pour tout couple de règles (v,m),(v,m'),
+$$Premier(m \cdot Suivant(v)) \cap Premier(m' \cdot Suivant(v))= \emptyset .$$
+
+2- Automate a pile deterministe ${\cal A}$ associé à une grammaire G qui est LL(1).
+
+Lemme 1: Tout calcul de ${\cal A}$ "correspond" à une dérivation gauche de G.
+
+Lemme 2: Toute dérivation gauche de G "correspond" à un calcul acceptant de ${\cal A}$.
+
+Théorème 3: Si G est LL(1), le langage engendré par G (suivi du marqueur $),
+est égal au langage reconnu (par pile vide) par ${\cal A}$.
+
+3- Calcul des fonctions Premier et Suivant.
+
+On se ramène à des calculs d'accessibilité dans des graphes finis.
+
+Corollaires:
+* On peut décider si une grammaire c.f. G est LL(1)
+* On peut construire (lorsque G est LL(1)) l'a.d.p. ${\cal A}$ associé à G.
+
+
+cours 9 (Lundi 26/02/18):
+-------------------------
+1- Grammaires LR(0).[Left-to-right, bottom-up, with Look-ahead of length 0].
+Idée générale: une classe de grammaires permettant une analyse ascendante,
+de gauche à droite, déterministe.
+
+Definitions techniques:
+item LR(0), item valide pour un mot w \in ((X \cup V)^*,
+prefixe viable.
+
+Proposition 1:
+Automate A0 non-deterministe des items valides.
+Pour tout mot w\in ((X \cup V)^*, l' ensemble des etats accessibles , par A0,
+en lisant w, est exactement l'ensemble des items valides pour w.
+
+Automate D0: c'est le determinise de A0 (par la construction vue avec A. Tanasa).
+
+Proposition 2:
+Idem que Prop1, mais pour D0.
+
+Definition 3:
+Une grammaire c.f. est LR(0) ssi, aucun etat accessible de l'automate D0
+ne contient un "conflit" (decaller-reduire ou reduire-reduire).
+
+2- Analyseur syntaxique {\cal A} associ'e a une grammaire.
+Definition (transitions de reduction, transitions de decallage).
+
+Theoreme 4:
+1- {\cal A} reconnait exactement L(G)
+2- Si G est LR(0), {\cal A} est deterministe.
+
+cours 10 (Lundi 05/03/18):
+-------------------------
+Grammaires LR(1).
+Definitions techniques:
+item LR(1), item valide pour un mot w \in ((X \cup V)^*,
+prefixe viable.
+
+Proposition 1:
+Automate A1 non-deterministe des items valides.
+Pour tout mot w \in ((X \cup V)^*, l' ensemble des etats accessibles , par A1,
+en lisant w, est exactement l'ensemble des items valides pour w.
+
+Automate D1: c'est le determinise de A1 (par la construction vue avec A. Tanasa).
+
+Proposition 2:
+Idem que Prop1, mais pour D1.
+
+Definition 3:
+Une grammaire c.f. est LR(1) ssi, aucun etat accessible de l'automate D1
+ne contient un "conflit" (decaller-reduire ou reduire-reduire).
+
+cours 11 (Lundi 12/03/18):
+-------------------------
+1- Notion d'analyseur LR {\cal A} associé a une grammaire:
+Ensemble d'états E, fonctions Action et Successeur
+Definition (transitions de reduction, transitions de decallage).
+
+Analyseur LR {\cal A} associe a une grammaire algébrique.
+
+Theoreme 4:
+1- L'analyseur {\cal A} reconnait exactement L(G).
+2- Si G est LR(1), alors {\cal A} est deterministe.
+
+2- Grammaires attribuées:
+* notion d'attributs, de règles de calcul d'attributs
+* attributs synthetises
+* attributs herites
+* décoration d'un arbre de dérivation réalisant les règles sémantiques.
+
+cours 12 (Lundi 19/03/18):
+-------------------------
+1- Grammaires attribuées (suite)
+Deux exemples:
+- une grammaire définissant les mots binaires
+un attribut (synthétisé)
+- la grammaire de IMP
+une règle sémantique associée à la règle:
+I -> If E Then I1 Else I2
+
+qui décrit le code à trois adresses de I en fonction de ceux de (E,I1,I2).
+Beaucoup de lettres et d'indices dans les definitions,
+beaucoup de questions de la part des étudiants.
+
+NB1:Je n'ai pas eu le temps de définir les grammaires S-attribuées, L-attribuées.
+NB2: La feuille de TD5 contient en annexe toutes les définitions utiles pour
+les grammaires d'attribut.
+NB3: J'ai promis aux étudiants (mais pas eu le temps de faire au cours 12)
+la preuve du fait que la grammaire de If-Then-Else du Dragon, page 212
+(version du site-web de l'UE) engendre bien le meme langage que la grammaire naive
+S-> \alpha S | \alpha S e S | a
+(\alpha \equiv If bool Then, e \equiv Else, a \equiv "autre instruction")
+[on a vérifié en TP que la grammaire du Dragon est LALR(1)].
+
+2- Treillis, treillis complet.
+Définition:
+Une application $f:(E_1, \leq_1) \: \rightarrow \: (E_2 \leq_2)$
+est dite continue ssi, pour toute partie $A \subseteq E_1$, admettant
+une borne supérieure $a = \bornsup (A)$, $\{f(x) \; | \; x \in A\}$
+admet aussi une borne supérieure et elle est égale à $f(a)$.
+
+Théorème:
+Si $f$ est une application continue d'un treillis complet dans
+lui-même, alors $f$ a un plus petit point fixe. Ce plus petit point
+fixe est \'egal \`a $$\bornsup (\{f^n(\bot) \; | \; n \in \NN\}).$$
+
+Distribution de 20 exemplaires du fichier intitulé "sémantique"
+(il est sur le site-web de l'UE, dans le paragraphe "projet 2017/18")
+Il décrit les sémantiques opérationnelles à grands-pas de IMP puis de Léa.
+
+cours 13 (Lundi 26/03/18):
+-------------------------
+Partie 1: Soit H la grammaire de If-Then-Else du Dragon, page 212
+(version du site-web de l'UE)
+H: U -> T | S
+S -> \alpha U | \alpha T e S
+T -> \alpha T e T + a
+
+engendre bien le meme langage que la grammaire naive
+G: S-> \alpha S | \alpha S e S | a
+(\alpha \equiv If bool Then, e \equiv Else, a \equiv "autre instruction")
+
+Lemme0: L(H,U) \subseteq L(G,S)
+(induction sur la longueur des derivations de H).
+
+Lemme 1:Soit $(E,\leq)$ un treillis complet et soit $\Phi: (E,\leq) \rightarrow (E,\leq)$
+une application continue. Notons $x$ le plus petit point fixe de $\Phi$.
+Alors, pour tout $y \in E$ tel que $\Phi(y) \leq y$ on a: $x \leq y$.
+
+Soit $X = \{ \alpha,a,e\}$, $E = {\cal P}(X^*)$
+et
+$\Phi: E \rightarrow E$ definie par
+$$\Phi(L) := \alpha L + \alpha L e L + a.$$
+$\Phi$ est continue.
+
+Lemme 2: $\Phi(L(H,U)) \subseteq L(H,U))$.
+
+preuve: par induction sur l'entier p+q
+\alpha L(H,U)_p e L(H,U)_q \subseteq L(H,U) et
+       L(H,S)_p e L(H,U)_q \subseteq L(H,U).
+
+Par les Lemmes 1 et 2:  L(G,S) \subseteq L(H,U)
+puis par le Lemme 0: L(G,S)= L(H,U)
+
+Partie 2: les grammaires LALR(1).
+Un exemple de grammaire (stylisation des instructions while):
+C -> A s C | A
+A -> w A | b C e | i
+
+ou les non-terminaux sont C, A
+et les terminaux sont s,b,e,w,i
+[abbreviations de Sequence, Begin, End, While e Do, Instruction].
+- on calcule l'automate des items LR(0) de G;
+on constate que G n'est pas LR(0)
+- on remarque que, en tenant compte d'un regard-en-avant de longueur 1, on peut
+construire un analyseur LR deterministe.
+- on remarque meme que, en fusionnant les ensembles d'items LR(1) qui se projettent
+sur un meme ensemble d'items LR(0), l'analyseur demeure deterministe.
+[c'est un exemple de grammaire "LALR(1)"]
+
+On definit la notion generale de grammaire G LALR(1):
+soit D_1 l'automate (deterministe) des ensembles d'items LR(1) valides de G;
+soient p,q deux etats de D_1, ils sont dits equivalents, ce que l'note p \equiv q
+ssi: l'ensemble des items LR(0) de p = l'ensemble des items LR(0) de q.
+La grammaire G est dite LALR(1) ssi, pour tout etat p de D_1,
+(\bigcup_{q \equiv p} q) ne presente aucun conflit red-red ou decal-red.
+
+cours 14 (Lundi 09/04/18):
+-------------------------
+Une structure de Kripke, sur l'alphabet d'actions $A$ et la signature propositionnelle 
+${\cal P}$ est un tuple
+$$\Kri:=\langle A,Q,\delta,(P^\Kri)_{P \in {\cal P}}\rangle $$
+tel que
+\begin{itemize}
+\item $A$ est un ensemble, l'ensemble des actions
+\item $Q$ est un ensemble, l'ensemble des \'etats
+\item $\delta \subset Q \times A \times Q$ est l'ensemble des
+transitions
+\item pour tout $P \in {\cal P},\;P^\Kri: Q \rightarrow \{0,1\}$ est une application 
+\`a valeurs bool\'eennes.
+\end{itemize}
+Un automate ${\cal A}$ sur l'alphabet d'entr\'ee $A$ et l'ensemble d' \'etats $Q$ peut \^etre vu comme une structure de Kripke en choisissant une structure propositionnelle \`a un seul 
+pr\'edicat $F$, interpr\'et\'e par
+$$F^{\cal A}(q):= 1 \mbox{ ssi } q \mbox{ est final }.$$
+\noindent \underline{Bisimulation}.\\
+Soit $A$ un alphabet, ${\cal P}$ une signature propositionnelle et,
+pour chaque $i \in \{0,1\}$,
+$\Kri_i:=\langle A,Q,\delta,(P)^{\Kri_i}_{P \in \{\cal P\}}\rangle$ une structure de Kripke sur $A,{\cal P}$.
+Une relation binaire $R \subseteq Q_0 \times Q_1$ est une {\em bisimulation} 
+de $\Kri_1$ vers $\Kri_2$ ssi:\\
+(B1)$\forall (p,q) \in R, \forall P \in {\cal P}, P^{\Kri_0}(p)=P^{\Kri_1}(q)$\\
+(B2)$\forall (p,q) \in R, \forall (p,a,p') \in \delta_0, \exists q' \in Q_1, 
+(q,a,q') \in \delta_1 \mbox{ et }(q,q') \in R$\\
+(B3)$\forall (p,q) \in R, \forall (q,a,q') \in \delta_1, \exists p' \in Q_0, 
+(p,a,p') \in \delta_0 \mbox{ et }(p,p') \in R$\\
+
+Proposition:
+------------
+Si deux automates finis sont bisimilaires (i.e. si  le couple formé de leurs états
+initiaux appartient à une bisimulation), alors ils reconnaissent le même langage.
+
+Quelques exemples: l'exercice 5.10 de la feuille de TD 5.
+On remarque que deux automates peuvent reconnaitre le même langage
+sans être bisimilaires.
+
+Application à la sémantique:
+
+Soient
+- A = l'ensemble des commandes d'un langage de programmation (IMP ou LEA, par exemple)
+- Q l'ensemble des états de la machine abstraite avec laquelle on a défini la sémantique
+(opérationnelle à grands pas, par exemple)
+- $\delta \subseteq Q times A \times Q$ est défini par
+$$(p,c,q) \in \delta \Leftrightarrow p/c \deducedir q.$$
+- ${\cal P}$ l'ensemble des variables propositionnelles est défini comme l'ensemble
+des expressions de type booléen, leur interprétation est définie par la sémantique
+du langage. Alors
+
+$${\cal K} = \langle A,Q,\delta,(P^\Kri)_{P \in {\cal P}}\rangle $$
+est une structure de Kripke.
+
+Si $${\cal K}' = \langle A,Q',\delta' ,(P^{\Kri'} )_{P \in {\cal P}}\rangle $$
+est définie par une autre machine abstraite (plus proche d'une machine telle que décrite
+par le cours d'architecture, par exemple), et si ${\cal K},{\cal K}'$ sont bisimilaires,
+alors elles "calculent la même chose" en ce sens que:
+- leurs calculs s'arrêtent sur les même programmes
+- dans l'etat atteint en fin de calcul, les valeurs des expressions booléennes sont les
+mêmes
+N.B. Si v est une variable du programme et k une constante, alors v=k est une expression,
+donc la valeur de v est bien la même en fin de calcul, dans les deux machines.
+
+On peut ainsi utiliser le concept de bisimulation pour prouver qu'un interpréteur
+(ou un compilateur) est correct.
+Exemple: exercice 5.13 de la feuille de TD 5.
