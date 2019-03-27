@@ -1,5 +1,8 @@
 #include "tools.h"
 #include "heap.h" // il faut aussi votre code pour heap.c
+#include <stdlib.h>
+#include <stdio.h>
+
 
 
 // Une fonction de type "heuristic" est une fonction h() qui renvoie
@@ -79,10 +82,16 @@ double weight[]={
 // somme des degrés des sommets dans la grille. Pour visualiser un
 // noeud de coordonnées (i,j) qui passe dans le tas Q vous pourrez
 // mettre G.mark[i][j] = M_FRONT au moment où vous l'ajoutez.
-
+int fcmp_min(const void *x, const void *y) { return *(int *)x - *(int *)y; }
 void A_star(grid G, heuristic h){
 
-  ;;;
+  heap Q=heap_create(G.X*G.Y,fcmp_min);
+  int **P=malloc(G.X*G.Y*sizeof(int*));
+  if (Q==NULL ||P== NULL){
+    printf("%s\n","k nulllllllllllllllllllllllllllll" );
+  }else{
+    printf("%s %d %d\n","non null",G.X,G.Y );
+  }
   // Pensez à dessiner la grille avec drawGrid(G) à chaque fois que
   // possible, par exemple, lorsque vous ajoutez un sommet à P mais
   // aussi lorsque vous reconstruisez le chemin à la fin de la
@@ -145,7 +154,7 @@ int main(int argc, char *argv[]){
   // grid G = initGridLaby(width/8,height/8,3); // labyrinthe aléatoire
   // position tmp; SWAP(G.start,G.end,tmp); // t->s (inverse source et cible)
   // grid G = initGridFile("mygrid.txt"); // grille à partir d'un fichier
- 
+
   // pour ajouter à G des "régions" de différent types:
 
   // addRandomBlob(G, V_WALL,   (G.X+G.Y)/20);
