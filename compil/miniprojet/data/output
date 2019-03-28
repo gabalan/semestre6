@@ -1,4 +1,0 @@
-
-Seq(Seq(Assignment(min(abs(UMinus(0.3)),5.0),resu),Assignment(PLUS(max(pow(sqrt(2.0),sqrt(2.0)),resu),3.0),res2)),res2)
-Eval:Seq(Seq(Assignment(min(abs(UMinus(0.3)),5.0),resu),Assignment(PLUS(max(pow(sqrt(2.0),sqrt(2.0)),resu),3.0),res2)),res2)
-Résultat: 4.632526919438153

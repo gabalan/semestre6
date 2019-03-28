@@ -1,4 +1,4 @@
-<project name="miniprojet" default="help">
+<project name="td6" default="help">
 
 	<target name="jflextask" unless="jflex.available" description="creates JFlex Ant task">
 		<taskdef name="jflex" classname="jflex.anttask.JFlexTask" classpath="lib/jflex-full-1.7.0.jar" />
