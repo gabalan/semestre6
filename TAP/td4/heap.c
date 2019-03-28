@@ -52,11 +52,8 @@ bool heap_add(heap h, void *object) {
         pos_fils=pos_pere;
         pos_pere=pos_fils/2;
       }
-
     }
-    }
-
-
+  }
   return false;
 }
 
@@ -64,7 +61,7 @@ void *heap_top(heap h) {
   if(h->array==NULL  || heap_empty(h)){
     return NULL;
   }
-  return h->array[h->size];
+  return h->array[1];
 }
 
 void *heap_pop(heap h) {
