@@ -64,16 +64,35 @@ void *heap_top(heap h) {
   if(h->array==NULL  || heap_empty(h)){
     return NULL;
   }
-  return h->array[h->size];
+  return h->array[1];
 }
 
 void *heap_pop(heap h) {
-  void * top=heap_top(h);
-  if (top==NULL){
-    return NULL;
-  }else{
-    h->array[h->size]=NULL;
-    h->size-=1;
-    return top;
-  }
+  if(heap_empty(h)) {
+        return NULL;
+    }
+    void *root = h->array[1];
+    h->array[1] = h->array[h->size];
+    int i = 1;
+    int min = 1;
+    do {
+        if(2*i <= h->size && h->f( h->array[2*i], h->array[min]) < 0 ) {
+            min = 2*i;
+        }
+        if(2*i+1 <= h->size && h->f( h->array[2*i+1], h->array[min]) < 0 ){
+            min = 2*i+1;
+        }
+        if(i != min) {
+            void *tmp = h->array[min] ;
+            h->array[min] = h->array[i];
+            h->array[i] = tmp;
+            i = min;
+        } else {
+            break;
+        }
+    } while(1);
+
+    h->size--;
+
+    return root;
 }

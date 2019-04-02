@@ -82,16 +82,75 @@ double weight[]={
 // somme des degrés des sommets dans la grille. Pour visualiser un
 // noeud de coordonnées (i,j) qui passe dans le tas Q vous pourrez
 // mettre G.mark[i][j] = M_FRONT au moment où vous l'ajoutez.
-int fcmp_min(const void *x, const void *y) { return *(int *)x - *(int *)y; }
+int compareNode(const void *x, const void *y) {
+    return ((node )x)->score - ((node)y)->score;
+}
 void A_star(grid G, heuristic h){
 
-  heap Q=heap_create(G.X*G.Y,fcmp_min);
-  int **P=malloc(G.X*G.Y*sizeof(int*));
-  if (Q==NULL ||P== NULL){
-    printf("%s\n","k nulllllllllllllllllllllllllllll" );
-  }else{
-    printf("%s %d %d\n","non null",G.X,G.Y );
-  }
+  heap Q = heap_create(G.X*G.Y,compareNode);
+   node start = malloc(sizeof(node*));
+   start->pos = G.start;
+   start->cost = 0;
+   start->parent = NULL;
+   heap_add(Q,start);
+   int totalNodes = 0;
+   G.mark[start->pos.x][start->pos.y] = M_FRONT;
+   while( !heap_empty(Q) ) {
+
+    node current = heap_pop(Q);
+
+    if(G.mark[current->pos.x][current->pos.y] == M_USED) {
+
+        continue;
+    }
+    G.mark[current->pos.x][current->pos.y] = M_USED;
+    if(current->pos.x == G.end.x && current->pos.y == G.end.y ) {
+        double totalCosts = 0;
+        while(current != NULL) {
+            totalCosts += current->cost;
+            G.mark[current->pos.x][current->pos.y] |= M_PATH;
+            current = current->parent;
+            totalNodes += 1;
+        }
+        printf("Longeur du chemin : %d\n",totalNodes);
+        printf("Cout du chemin : %lf\n",totalCosts);
+        return;
+    }
+
+    for(int i = -1; i <= 1; i++) {
+        for(int j = -1; j <= 1; j++) {
+            int x = current->pos.x+i;
+            int y = current->pos.y+j;
+
+            double cost=current->cost + weight[G.value[x][y]];
+
+                if(G.mark[x][y] == M_USED ) {} //Inside P
+                else if(  G.value[x][y] != V_WALL ) {
+                    node voisin = malloc(sizeof(node));
+                    voisin->pos.x = x;
+                    voisin->pos.y = y;
+                      printf("le double  %lf\n",voisin->cost);
+                    if(abs(i) == abs(j) && (abs(i) == 1 || abs(i) == 0)) {
+                      voisin->cost = cost;
+                    } else {
+                      voisin->cost = cost;
+                    }
+                    voisin->score = voisin->cost + h(voisin->pos,G.end,&G);
+                    voisin->parent = current;
+                    G.mark[x][y] = M_FRONT;
+                    heap_add(Q,voisin);
+
+
+                    drawGrid(G);
+                }
+        }
+
+    }
+
+
+}
+printf("le chemin n'existe pas\n");
+
   // Pensez à dessiner la grille avec drawGrid(G) à chaque fois que
   // possible, par exemple, lorsque vous ajoutez un sommet à P mais
   // aussi lorsque vous reconstruisez le chemin à la fin de la
@@ -137,7 +196,7 @@ void A_star(grid G, heuristic h){
   //
   ;;;
 }
-
+int delay=10; // presser 'a' ou 'z' pour accélèrer ou ralentir l'affichage, unité = 1/100 s
 int main(int argc, char *argv[]){
 
   unsigned seed=time(NULL)%1000;
