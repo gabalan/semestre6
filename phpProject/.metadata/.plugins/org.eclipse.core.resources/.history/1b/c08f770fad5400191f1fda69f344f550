@@ -1,0 +1,42 @@
+<?php
+
+class SignIn extends  Controller
+{
+    public function login($post,$login)
+    {
+        if ( $this->model->is_empty($post,$login))//champs vide?
+        {
+            $this->view->setinfo("*Tous les champs doivent etre remplits",0);
+            $this->view->retry_connect_or_create();
+            exit();
+        }
+        if ($this->model->login($post))
+        {//verifie si le mot de pass et l'identifiant se correspondent .si oui alors conncetion
+            $_SESSION["login"] = $post['identifiant'];
+            $_SESSION["user_number"] = $this->model->getNumber($post['identifiant']);
+            $_SESSION["user_last_name"] = $this->model->getLastName($_SESSION["user_number"]);
+            $_SESSION["user_first_name"] = $this->model->getFirstName($_SESSION["user_number"]);
+            
+            $post['forum_page'] = 1;
+            $post['forum_user'] = $_SESSION["user_number"];
+            
+            //verify if the account is the admin, if so store it in the session
+            if($this->isAdmin()){
+                $_SESSION["admin"] = true;
+            }else{
+                $_SESSION["admin"] = false;
+            }
+            
+            $this->forum($post, 'consulter');
+            exit();
+        }
+        else
+        {
+            $this->view->setinfo("*Compte non trouvé !",0);
+            $this->view->retry_connect_or_create();
+            exit();
+        }
+        
+    }
+}
+?>
