@@ -37,6 +37,7 @@ typedef struct node {
   double cost;         // coût[u]
   double score;        // score[u] = coût[u] + h(u,end)
   struct node* parent; // parent[u] = pointeur vers le père, NULL pour start
+  int source;
 } *node;
 
 
@@ -82,16 +83,19 @@ double weight[]={
 // somme des degrés des sommets dans la grille. Pour visualiser un
 // noeud de coordonnées (i,j) qui passe dans le tas Q vous pourrez
 // mettre G.mark[i][j] = M_FRONT au moment où vous l'ajoutez.
-int compareNode(const void *x, const void *y) {
+int compare(const void *x, const void *y) {
     return ((node )x)->score - ((node)y)->score;
 }
 void A_star(grid G, heuristic h){
 
-  heap Q = heap_create(G.X*G.Y,compareNode);
-   node start = malloc(sizeof(node*));
+  heap Q = heap_create(G.X*G.Y,compare);
+   node start = malloc(sizeof(*start));
+   node end = malloc(sizeof(*end));
    start->pos = G.start;
    start->cost = 0;
    start->parent = NULL;
+   end->pos = G.end;
+   start->score=start->cost + h(start->pos,end->pos,&G);
    heap_add(Q,start);
    int totalNodes = 0;
    G.mark[start->pos.x][start->pos.y] = M_FRONT;
@@ -108,7 +112,7 @@ void A_star(grid G, heuristic h){
         double totalCosts = 0;
         while(current != NULL) {
             totalCosts += current->cost;
-            G.mark[current->pos.x][current->pos.y] |= M_PATH;
+            G.mark[current->pos.x][current->pos.y] = M_PATH;
             current = current->parent;
             totalNodes += 1;
         }
@@ -124,12 +128,11 @@ void A_star(grid G, heuristic h){
 
             double cost=current->cost + weight[G.value[x][y]];
 
-                if(G.mark[x][y] == M_USED ) {} //Inside P
+                if(G.mark[x][y] == M_USED ) {/* ne fait rien s'il y est dans P*/}
                 else if(  G.value[x][y] != V_WALL ) {
-                    node voisin = malloc(sizeof(node));
+                    node voisin = malloc(sizeof(*voisin));
                     voisin->pos.x = x;
                     voisin->pos.y = y;
-                      printf("le double  %lf\n",voisin->cost);
                     if(abs(i) == abs(j) && (abs(i) == 1 || abs(i) == 0)) {
                       voisin->cost = cost;
                     } else {
@@ -141,13 +144,13 @@ void A_star(grid G, heuristic h){
                     heap_add(Q,voisin);
 
 
-                    drawGrid(G);
+
                 }
         }
 
     }
 
-
+    drawGrid(G);
 }
 printf("le chemin n'existe pas\n");
 
@@ -196,7 +199,141 @@ printf("le chemin n'existe pas\n");
   //
   ;;;
 }
-int delay=10; // presser 'a' ou 'z' pour accélèrer ou ralentir l'affichage, unité = 1/100 s
+void A_star2(grid G, heuristic h){
+  heap Q = heap_create(G.X*G.Y,compare);
+    for(int i = 0; i < G.X; i++)
+        for(int j = 0; j < G.Y; j++)
+            G.mark[i][j]=M_NULL;
+  node start = malloc(sizeof(*start));
+
+  start->pos = G.start;
+  start->cost = 0;
+  start->parent = NULL;
+  start->score=0;
+  start->source = 1;
+
+  node end = malloc(sizeof(*end));
+  end->pos = G.end;
+  end->cost = 0;
+  end->parent = NULL;
+  end->score = 0;
+  end->source = 0;
+
+  heap_add(Q,start);
+  heap_add(Q,end);
+  int totalNodes = 0;
+  while( !heap_empty(Q) ) {
+      node current = heap_pop(Q);
+      if(G.mark[current->pos.x][current->pos.y] == M_USED && current->source == 0) {
+          printf("Fini\n");
+          node parent = current;
+
+          printf("Chemin\n");
+          int totalCosts = 0;
+          while(current != NULL) {
+              totalCosts += current->cost;
+              G.mark[current->pos.x][current->pos.y] = M_PATH;
+              current = current->parent;
+              totalNodes += 1;
+          }
+          current = heap_pop(Q);
+          while(current != NULL) {
+              if((current->parent)->pos.x == parent->pos.x &&
+                 (current->parent)->pos.y == parent->pos.y && current->source == 1) {
+                  break;
+              }
+              current = heap_pop(Q);
+          }
+
+          while(current != NULL) {
+              totalCosts += current->cost;
+              G.mark[current->pos.x][current->pos.y] = M_PATH;
+              current = current->parent;
+              totalNodes += 1;
+          }
+          printf("Longeur du chemin : %d\n",totalNodes);
+          printf("Cout du chemin : %d\n",totalCosts);
+          return;
+      } else if (G.mark[current->pos.x][current->pos.y] == M_USED2 && current->source == 1) {
+          printf("Fini2\n");
+          node parent = current;
+          //Construct path
+          printf("Chemin\n");
+          int totalCosts = 0;
+          while(current != NULL) {
+              totalCosts += current->cost;
+              G.mark[current->pos.x][current->pos.y] = M_PATH;
+              current = current->parent;
+              totalNodes += 1;
+          }
+          current = heap_pop(Q);
+          while(current != NULL) {
+              if((current->parent)->pos.x == parent->pos.x &&
+                 (current->parent)->pos.y == parent->pos.y && current->source == 0) {
+                  break;
+              }
+              current = heap_pop(Q);
+          }
+
+          while(current != NULL) {
+              totalCosts += current->cost;
+              G.mark[current->pos.x][current->pos.y] = M_PATH;
+              current = current->parent;
+              totalNodes += 1;
+          }
+          printf("Longeur du chemin : %d\n",totalNodes);
+          printf("Cout du chemin : %d\n",totalCosts);
+          return;
+      }
+      if(G.mark[current->pos.x][current->pos.y] == M_USED || G.mark[current->pos.x][current->pos.y] == M_USED2) {
+          continue;
+      }
+      if(current->source == 1)
+        G.mark[current->pos.x][current->pos.y] = M_USED;
+      else
+        G.mark[current->pos.x][current->pos.y] = M_USED2;
+
+
+      for(int i = -1; i <= 1; i++) {
+          for(int j = -1; j <= 1; j++) {
+              int nbX = current->pos.x+i;
+              int nbY = current->pos.y+j;
+                  if(G.mark[nbX][nbY] == M_USED && current->source == 1  ) {
+                      continue;
+                  } else if (G.mark[nbX][nbY] == M_USED2 && current->source == 0 ) {
+                      continue;
+                  } else if( G.value[nbX][nbY] != V_WALL ) {
+                      node nb = malloc(sizeof(*nb));
+                      nb->pos.x = nbX;
+                      nb->pos.y = nbY;
+                      if(abs(i) == abs(j) && (abs(i) == 1 || abs(i) == 0)) {
+                        nb->cost = current->cost + weight[G.value[nbX][nbY]];
+                      } else {
+                        nb->cost = current->cost + weight[G.value[nbX][nbY]];
+                      }
+                      if(current->source == 1) {
+                        nb->score = nb->cost + h(nb->pos,G.end,&G);
+                        nb->source = 1;
+                      }
+                      else {
+                        nb->score = nb->cost + h(nb->pos,G.start,&G);
+                        nb->source = 0;
+                      }
+
+                      nb->parent = current;
+                      //G.mark[nbX][nbY] = M_FRONT;
+                      heap_add(Q,nb);
+
+                      drawGrid(G);
+                  }
+          }
+      }
+
+  }
+  printf("Erreur pas de chemin\n");
+
+}
+
 int main(int argc, char *argv[]){
 
   unsigned seed=time(NULL)%1000;
@@ -206,13 +343,14 @@ int main(int argc, char *argv[]){
 
   // tester les différentes grilles et positions s->t ...
 
-  grid G = initGridPoints(80,60,V_FREE,1); // grille uniforme
-  // grid G = initGridPoints(32,24,V_WALL,0.2); // grille de points aléatoires
+ //grid G = initGridPoints(80,60,V_FREE,1); // grille uniforme
+   //grid G = initGridPoints(32,24,V_WALL,0.2); // grille de points aléatoires
+     grid G = initGridFile("mygrid.txt"); // grille à partir d'un fichier
   position s={G.X/4,G.Y/2}, t={G.X/2,G.Y/4}; G.start=s; G.end=t; // s->t
   // grid G = initGridLaby(64,48,4); // labyrinthe aléatoire
   // grid G = initGridLaby(width/8,height/8,3); // labyrinthe aléatoire
   // position tmp; SWAP(G.start,G.end,tmp); // t->s (inverse source et cible)
-  // grid G = initGridFile("mygrid.txt"); // grille à partir d'un fichier
+
 
   // pour ajouter à G des "régions" de différent types:
 
@@ -225,14 +363,15 @@ int main(int argc, char *argv[]){
 
   // constantes à initialiser avant init_SDL_OpenGL()
   scale = fmin((double)width/G.X,(double)height/G.Y); // zoom courant
-  delay = 80; // délais pour l'affichage (voir tools.h)
+  delay = 10; // délais pour l'affichage (voir tools.h)
   hover = false; // interdire déplacement de points
   init_SDL_OpenGL(); // à mettre avant le 1er "draw"
   drawGrid(G); // dessin de la grille avant l'algo
   update = false; // accélère les dessins répétitifs
 
-  alpha=0;
-  A_star(G,halpha); // heuristique: h0, hvo, alpha*hvo
+  alpha=2;
+//  A_star(G,halpha);
+ A_star2(G,halpha); // heuristique: h0, hvo, alpha*hvo
 
   update = true; // force l'affichage de chaque dessin
   while (running) { // affiche le résultat et attend
