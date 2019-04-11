@@ -34,10 +34,19 @@ bool heap_empty(heap h) {
 }
 
 bool heap_add(heap h, void *object) {
+
   if (h->size==h->nmax){
-    return true;
+  //  maChaine = realloc(maChaine, 20 * sizeof(char));
+    h->array=(void*)realloc(h->array,2*(h->nmax)*sizeof(void*));
+    if(h->array==NULL){
+      printf("%s\n","tableau null" );
+      return true;
+    }else{
+        h->nmax=2*(h->nmax);
+    }
+
+
   }
-  else{
     h->array[h->size+1]=object;
     h->size=h->size+1;
     if (h->size==1){
@@ -54,7 +63,7 @@ bool heap_add(heap h, void *object) {
       }
 
     }
-    }
+
 
 
   return false;
