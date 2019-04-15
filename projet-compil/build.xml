@@ -1,7 +1,5 @@
-<!-- ----------------------------------------------------------------------
--- Changements de detail par rapport a la version 20190401
----------------------------------------------------------------------- -->
-<project name="Projet LEA" default="help">
+
+<project name="projet-compil" default="help">
 
 	<target name="jflextask" unless="jflex.available" description="creates JFlex Ant task">
 		<taskdef name="jflex" classname="jflex.anttask.JFlexTask" classpath="lib/jflex-full-1.7.0.jar" />
@@ -61,4 +59,3 @@
 	</target>
 
 </project>
-
