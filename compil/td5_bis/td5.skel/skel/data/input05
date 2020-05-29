@@ -1,2 +1,0 @@
-find: (List(string)) -> (string) -> int;
-find(["un","deux","trois"])

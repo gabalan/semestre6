@@ -1,3 +1,0 @@
-item: (int) -> (List(string)) -> string;
-i: int;
-item(i)(["un","deux","trois"])

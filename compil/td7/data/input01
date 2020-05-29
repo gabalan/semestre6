@@ -1,8 +1,0 @@
-int a;
-int b;
-int c;
-a = 42;
-b = 12;
-c = b + a;
-int d;
-d = (a * 12) + (b * 5) + 2 * -c;
